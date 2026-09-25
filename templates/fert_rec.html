@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Fertilizer Recommendation{% endblock %}
+{% block extra_head %}
+<style>
+.fert-page{min-height:calc(100vh - 100px);display:flex;}
+.fert-main{margin-left:256px;flex:1;padding:0;position:relative;overflow:hidden;}
+.fert-bg{position:absolute;inset:0;background:url('/static/images/crop_rows.jpg') center/cover no-repeat;filter:brightness(.42) saturate(1.2);}
+.fert-ov{position:absolute;inset:0;background:linear-gradient(140deg,rgba(4,20,1,.72) 0%,rgba(12,38,4,.50) 50%,rgba(2,14,1,.76) 100%);}
+.fert-content{position:relative;z-index:2;padding:30px;}
+.fert-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;}
+.fert-card{background:rgba(255,253,232,.82);backdrop-filter:blur(26px) saturate(185%);border:1.5px solid rgba(180,130,10,.2);border-radius:var(--rxxl);position:relative;overflow:hidden;box-shadow:0 20px 56px rgba(0,0,0,.26),var(--shx);}
+.fert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2),var(--G3));}
+.fert-card-body{padding:28px;}
+
+/* Live NPK progress bars */
+.npk-wrap{margin:14px 0 16px;}
+.npk-row{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+.npk-row:last-child{margin-bottom:0;}
+.npk-lbl{font-size:.7rem;font-weight:800;color:var(--t2);width:22px;letter-spacing:.05em;}
+.npk-track{flex:1;height:8px;border-radius:4px;background:rgba(180,130,10,.1);overflow:hidden;}
+.npk-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.npk-n{background:linear-gradient(90deg,var(--G1),var(--G3));}
+.npk-p{background:linear-gradient(90deg,#1a5eb0,#5aaae8);}
+.npk-k{background:linear-gradient(90deg,var(--W1),var(--W3));}
+.npk-val{font-size:.7rem;font-weight:800;color:var(--G1);width:28px;text-align:right;}
+
+/* Fert result */
+.fert-result{background:linear-gradient(135deg,rgba(220,240,255,.9),rgba(240,230,255,.9));border:2px solid rgba(100,100,220,.22);border-radius:var(--rxl);padding:24px;text-align:center;margin-top:18px;box-shadow:0 8px 28px rgba(80,80,200,.14);animation:rpop .5s cubic-bezier(.34,1.56,.64,1);}
+
+/* Side info card — seedling_sunset thumbnail */
+.fert-info{background:rgba(255,253,232,.82);backdrop-filter:blur(26px) saturate(185%);border:1.5px solid rgba(180,130,10,.2);border-radius:var(--rxxl);overflow:hidden;box-shadow:0 20px 56px rgba(0,0,0,.26),var(--shx);}
+.fert-info::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2));}
+.fert-info-img{width:100%;height:150px;object-fit:cover;display:block;filter:brightness(.78);}
+.fert-info-body{padding:22px;}
+.fert-list-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--r);background:rgba(255,250,220,.6);border:1px solid rgba(180,130,10,.1);margin-bottom:7px;font-size:.83rem;font-weight:600;color:var(--t1);}
+.fert-list-item:last-child{margin-bottom:0;}
+.fert-dot{width:7px;height:7px;border-radius:50%;background:var(--G2);flex-shrink:0;}
+
+@media(max-width:900px){.fert-main{margin-left:0;}.fert-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="fert-page">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink act"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+  <div class="fert-main">
+    <div class="fert-bg"></div>
+    <div class="fert-ov"></div>
+    <div class="fert-content">
+      <div class="ph an" style="margin-bottom:20px;">
+        <div class="ph-row">
+          <div class="ph-ico" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);"><i class="fas fa-flask"></i></div>
+          <div>
+            <div class="ptitle" style="color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4);">Fertilizer Recommendation</div>
+            <div class="psub" style="color:rgba(220,255,200,.8);">Enter soil nutrients for precise fertilizer advice</div>
+          </div>
+        </div>
+      </div>
+      <div class="fert-grid">
+        <div class="fert-card an a2">
+          <div class="fert-card-body">
+            <form action="" method="POST">
+              {% csrf_token %}
+              <div class="fg"><label class="fl">Farmer Name</label><input type="text" name="farmer_name" class="fc" value="{{ farmer_name }}" placeholder="Full name"></div>
+              <div class="sp">
+                <div class="splbl"><i class="fas fa-vial" style="margin-right:5px;"></i>Soil Nutrients — Live Preview</div>
+                <!-- Live NPK bars -->
+                <div class="npk-wrap">
+                  <div class="npk-row"><div class="npk-lbl">N</div><div class="npk-track"><div class="npk-fill npk-n" id="nBar" style="width:{{ n|default:0 }}%"></div></div><div class="npk-val" id="nVal">{{ n|default:"0" }}</div></div>
+                  <div class="npk-row"><div class="npk-lbl">P</div><div class="npk-track"><div class="npk-fill npk-p" id="pBar" style="width:{{ p|default:0 }}%"></div></div><div class="npk-val" id="pVal">{{ p|default:"0" }}</div></div>
+                  <div class="npk-row"><div class="npk-lbl">K</div><div class="npk-track"><div class="npk-fill npk-k" id="kBar" style="width:{{ k|default:0 }}%"></div></div><div class="npk-val" id="kVal">{{ k|default:"0" }}</div></div>
+                </div>
+                <div class="g3">
+                  <div class="fg" style="margin-bottom:0;"><label class="fl">Nitrogen</label><input type="number" name="n" id="nIn" class="fc" value="{{ n }}" placeholder="0–100" oninput="upd('n',this.value)"></div>
+                  <div class="fg" style="margin-bottom:0;"><label class="fl">Phosphorous</label><input type="number" name="p" id="pIn" class="fc" value="{{ p }}" placeholder="0–100" oninput="upd('p',this.value)"></div>
+                  <div class="fg" style="margin-bottom:0;"><label class="fl">Potassium</label><input type="number" name="k" id="kIn" class="fc" value="{{ k }}" placeholder="0–100" oninput="upd('k',this.value)"></div>
+                </div>
+              </div>
+              <div class="sp">
+                <div class="splbl"><i class="fas fa-cloud-sun" style="margin-right:5px;"></i>Environment</div>
+                <div class="g2">
+                  <div class="fg" style="margin-bottom:0;"><label class="fl">Temperature (°C)</label><input type="text" name="temperature" class="fc" value="{{ temperature }}" placeholder="28"></div>
+                  <div class="fg" style="margin-bottom:0;"><label class="fl">Humidity (%)</label><input type="text" name="humidity" class="fc" value="{{ humidity }}" placeholder="75"></div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-crop bw" style="padding:13px;"><i class="fas fa-magic"></i> Get Fertilizer Recommendation</button>
+            </form>
+            {% if result %}
+            <div class="fert-result">
+              <div style="font-size:.68rem;font-weight:700;color:#5050c8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;">Recommended Fertilizer</div>
+              <div style="font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--t1);">{{ result }}</div>
+              <div style="margin-top:8px;font-size:.82rem;color:var(--t3);">Apply <strong>{{ result }}</strong> — follow dosage guidelines and consult your local agricultural officer.</div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <!-- SIDE PANEL: seedling_sunset thumbnail + fertilizer list -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="fert-info an a3" style="position:relative;">
+            <img src="/static/images/seedling_sunset.jpg" alt="Growing Crop" class="fert-info-img">
+            <div class="fert-info-body">
+              <div style="font-weight:700;font-size:.9rem;color:var(--t1);margin-bottom:13px;"><i class="fas fa-list" style="color:var(--G2);margin-right:7px;"></i>Common Fertilizers</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>Urea</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>DAP (Di-Ammonium Phosphate)</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>14-35-14 (NPK)</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>28-28 (NPK)</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>17-17-17 (NPK)</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>20-20 (NPK)</div>
+              <div class="fert-list-item"><div class="fert-dot"></div>10-26-26 (NPK)</div>
+            </div>
+          </div>
+          <div class="fert-info an a4" style="position:relative;">
+            <div class="fert-info-body">
+              <div style="font-weight:700;font-size:.9rem;color:var(--t1);margin-bottom:11px;"><i class="fas fa-info-circle" style="color:var(--G2);margin-right:7px;"></i>Understanding NPK</div>
+              <div style="font-size:.8rem;color:var(--t3);line-height:1.72;">
+                <strong style="color:var(--G1);">N — Nitrogen:</strong> Promotes leaf & stem growth.<br>
+                <strong style="color:#2266aa;">P — Phosphorous:</strong> Supports root development and flowering.<br>
+                <strong style="color:var(--W1);">K — Potassium:</strong> Improves disease resistance & fruit quality.<br><br>
+                Enter values between 0–100 representing mg/kg concentration in your soil.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>function upd(t,v){var pct=Math.min(100,Math.max(0,parseFloat(v)||0));document.getElementById(t+'Bar').style.width=pct+'%';document.getElementById(t+'Val').textContent=v||'0';}</script>
+{% endblock %}

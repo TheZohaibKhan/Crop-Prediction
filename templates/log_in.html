@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block extra_head %}
+<style>
+.auth-wrap{min-height:calc(100vh - 100px);position:relative;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-bg{position:absolute;inset:0;background:url('/static/images/crop_rows.jpg') center/cover no-repeat;filter:brightness(.45) saturate(1.2);}
+.auth-ov{position:absolute;inset:0;background:linear-gradient(160deg,rgba(4,16,1,.72) 0%,rgba(12,35,4,.52) 50%,rgba(3,12,1,.78) 100%);}
+.auth-card{position:relative;z-index:2;background:rgba(255,253,235,.88);backdrop-filter:blur(28px) saturate(185%);border:1.5px solid rgba(180,130,10,.22);border-radius:var(--rxxl);padding:44px 42px;width:100%;max-width:440px;box-shadow:var(--shx);overflow:hidden;}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2),var(--G3));}
+.auth-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:10px;}
+.auth-logo img{width:38px;filter:drop-shadow(0 2px 6px rgba(100,60,0,.3));}
+.auth-logo span{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--t1);}
+.auth-logo b{color:var(--G1);}
+.auth-sub-logo{text-align:center;font-size:.62rem;color:var(--t4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;font-weight:600;}
+.auth-title{font-family:'Fraunces',serif;font-size:1.65rem;font-weight:700;color:var(--t1);text-align:center;margin-bottom:4px;}
+.auth-sub{text-align:center;color:var(--t4);font-size:.85rem;margin-bottom:28px;}
+.auth-sub a{color:var(--G1);font-weight:700;text-decoration:none;}
+.auth-accent{display:flex;justify-content:center;margin-bottom:24px;}
+.auth-accent-line{width:48px;height:3px;background:linear-gradient(90deg,var(--G1),var(--G2));border-radius:2px;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .fc{padding-left:42px;}
+.input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--G2);font-size:.85rem;}
+.eye-btn{position:absolute;right:13px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--t4);font-size:.85rem;transition:color .2s;}
+.eye-btn:hover{color:var(--G1);}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(180,130,10,.15);}
+.divider span{color:var(--t5);font-size:.74rem;}
+.alt-link{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:11px;border-radius:99px;text-decoration:none;border:1.5px solid rgba(180,130,10,.2);background:rgba(255,252,225,.5);color:var(--t2);font-size:.85rem;font-weight:600;transition:all .25s;}
+.alt-link:hover{border-color:rgba(30,107,16,.35);color:var(--G1);background:rgba(45,143,28,.06);}
+</style>
+{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-bg"></div>
+  <div class="auth-ov"></div>
+  <div class="auth-card an">
+    <div class="auth-logo"><img src="/static/images/agri_icon.png" alt=""><span>Agri<b>Smart</b></span></div>
+    <div class="auth-sub-logo">Agriculture Farm Platform</div>
+    <h2 class="auth-title">Welcome Back</h2>
+    <div class="auth-accent"><div class="auth-accent-line"></div></div>
+    <p class="auth-sub">New here? <a href="/register">Create a free account</a> · <a href="/forgot_password" style="color:var(--W1);">Forgot Password?</a></p>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="fg">
+        <label class="fl"><i class="fas fa-envelope" style="color:var(--G2);margin-right:5px;"></i>Email Address</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" name="username" class="fc" placeholder="you@example.com" required autofocus>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl"><i class="fas fa-lock" style="color:var(--G2);margin-right:5px;"></i>Password</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" name="password" id="pwd" class="fc" placeholder="Enter your password" required style="padding-right:42px;">
+          <span class="eye-btn" onclick="togglePwd('pwd','eye1')" id="eye1"><i class="fas fa-eye"></i></span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-crop bw" style="padding:13px;margin-top:6px;"><i class="fas fa-sign-in-alt"></i> Sign In to AgriSmart</button>
+    </form>
+    <div class="divider"><span>or continue as</span></div>
+    <a href="/vendor_log_in" class="alt-link"><i class="fas fa-store" style="color:var(--G2);"></i> Login as Vendor</a>
+  </div>
+</div>
+<script>function togglePwd(id,eid){var i=document.getElementById(id),e=document.getElementById(eid);if(i.type==='password'){i.type='text';e.innerHTML='<i class="fas fa-eye-slash"></i>';}else{i.type='password';e.innerHTML='<i class="fas fa-eye"></i>';}}</script>
+{% endblock %}

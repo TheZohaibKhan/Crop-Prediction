@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Crop Report{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink act"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-g"><i class="fas fa-seedling"></i></div>
+        <div>
+          <div class="ptitle">Crop Recommendation Report</div>
+          <div class="psub">Download or print your personalised crop advisory</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;" class="an a1">
+      <div class="gc">
+        <div class="gcb">
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-id-card" style="margin-right:6px;"></i>Farmer Information</div>
+          <div style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;">
+            <div><div style="font-size:.68rem;font-weight:700;color:var(--t5);text-transform:uppercase;letter-spacing:.05em;">Name</div><div style="font-size:.9rem;font-weight:700;color:var(--t1);margin-top:2px;">{{ crop_data.farmer_name }}</div></div>
+            <div><div style="font-size:.68rem;font-weight:700;color:var(--t5);text-transform:uppercase;letter-spacing:.05em;">Contact</div><div style="font-size:.9rem;font-weight:700;color:var(--t1);margin-top:2px;">{{ crop_data.contact_no }}</div></div>
+          </div>
+
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;"><i class="fas fa-vial" style="margin-right:6px;"></i>Soil Parameters</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+            <div style="background:rgba(45,143,28,.07);border:1px solid rgba(45,143,28,.15);border-radius:var(--r);padding:11px;text-align:center;"><div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);margin-bottom:2px;">Nitrogen (N)</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--G1);">{{ crop_data.n }}</div></div>
+            <div style="background:rgba(212,150,14,.08);border:1px solid rgba(212,150,14,.18);border-radius:var(--r);padding:11px;text-align:center;"><div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);margin-bottom:2px;">Phosphorous (P)</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--W1);">{{ crop_data.p }}</div></div>
+            <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.15);border-radius:var(--r);padding:11px;text-align:center;"><div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);margin-bottom:2px;">Potassium (K)</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--S2);">{{ crop_data.k }}</div></div>
+          </div>
+
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:11px;"><i class="fas fa-cloud-sun" style="margin-right:6px;"></i>Climate & Environment</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Temperature</span><span style="font-size:.82rem;font-weight:700;color:var(--t1);">{{ crop_data.temperature }} °C</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Humidity</span><span style="font-size:.82rem;font-weight:700;color:var(--t1);">{{ crop_data.humidity }} %</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Soil pH</span><span style="font-size:.82rem;font-weight:700;color:var(--t1);">{{ crop_data.ph }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 12px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Rainfall</span><span style="font-size:.82rem;font-weight:700;color:var(--t1);">{{ crop_data.rainfall }} mm</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="rbox an a2">
+          <div class="rlbl"><i class="fas fa-seedling" style="margin-right:5px;"></i> Recommended Crop</div>
+          <div class="rval">{{ crop_data.prediction }}</div>
+          <div style="font-size:.8rem;color:var(--t3);margin-top:8px;">Ideal for your current soil and climate conditions.</div>
+        </div>
+        <form action="" method="POST" class="gc an a3">
+          {% csrf_token %}
+          <div class="gcb" style="padding:20px;">
+            <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-download" style="margin-right:5px;"></i>Export & Actions</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <button type="submit" class="btn btn-crop bw"><i class="fas fa-download"></i> Download Report</button>
+              <button type="button" onclick="window.print()" class="btn btn-wheat bw"><i class="fas fa-print"></i> Print Report</button>
+              <a href="/dashboard" class="btn btn-glass bw"><i class="fas fa-th-large"></i> Back to Dashboard</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

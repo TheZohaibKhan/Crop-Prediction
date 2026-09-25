@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block extra_head %}
+<style>
+/* ─── HERO: seedling_sunset.jpg — cinematic crop sprouting at golden hour ─── */
+.hero{min-height:calc(100vh - 100px);position:relative;overflow:hidden;display:flex;align-items:center;}
+.hbg{position:absolute;inset:0;background:url('/static/images/seedling_sunset.jpg') center 40%/cover no-repeat;filter:brightness(.42) saturate(1.3);animation:hzm 22s ease-in-out infinite alternate;}
+@keyframes hzm{0%{transform:scale(1);}100%{transform:scale(1.055);}}
+.hov{position:absolute;inset:0;background:linear-gradient(110deg,rgba(4,14,1,.86) 0%,rgba(12,32,4,.46) 45%,rgba(3,12,1,.78) 100%);}
+.hfd{position:absolute;bottom:0;left:0;right:0;height:220px;background:linear-gradient(0deg,#fdfaf2 0%,transparent 100%);z-index:1;}
+.hcontent{position:relative;z-index:2;max-width:640px;padding:0 72px;}
+.hpill{display:inline-flex;align-items:center;gap:8px;background:rgba(180,130,10,.2);border:1px solid rgba(212,160,20,.42);backdrop-filter:blur(10px);color:#fde68a;padding:6px 16px;border-radius:99px;font-size:.73rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px;}
+.hdot{width:6px;height:6px;border-radius:50%;background:var(--W3);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.28;transform:scale(.5);}}
+.htitle{font-family:'Fraunces',serif;font-size:clamp(2rem,5.2vw,4rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:18px;letter-spacing:-.02em;}
+.htitle .gold{color:#f5cc5a;font-style:italic;}
+.htitle .gr{color:#7dd65f;}
+.hdesc{font-size:.97rem;color:rgba(228,255,208,.82);line-height:1.78;margin-bottom:34px;max-width:495px;font-weight:400;}
+.hbtns{display:flex;gap:13px;flex-wrap:wrap;}
+.hbp{padding:13px 30px;border-radius:99px;font-size:.9rem;font-weight:700;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;border:none;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:9px;box-shadow:0 6px 24px rgba(30,107,16,.46);transition:all .28s;letter-spacing:.04em;}
+.hbp:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(30,107,16,.62);}
+.hbg2{padding:13px 30px;border-radius:99px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.28);backdrop-filter:blur(12px);cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:all .28s;letter-spacing:.04em;}
+.hbg2:hover{background:rgba(255,255,255,.18);border-color:rgba(240,180,41,.55);color:#f5cc5a;}
+
+/* Floating glass stats card (right side) — wheat_harvest.jpg thumbnail */
+.hpanel{position:absolute;right:72px;top:50%;transform:translateY(-50%);z-index:2;
+  background:rgba(255,252,228,.84);backdrop-filter:blur(26px) saturate(185%);
+  border:1.5px solid rgba(180,130,10,.26);border-radius:var(--rxl);
+  min-width:218px;overflow:hidden;box-shadow:var(--shx);
+  animation:hpfl 7.5s ease-in-out infinite;}
+@keyframes hpfl{0%,100%{transform:translateY(-50%);}50%{transform:translateY(calc(-50% - 14px));}}
+.hpanel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2));}
+.hp-img{width:100%;height:130px;object-fit:cover;display:block;}
+.hp-body{padding:18px 20px;}
+.hp-lbl{font-size:.62rem;font-weight:700;color:var(--t5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:13px;}
+.hp-row{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(180,130,10,.11);}
+.hp-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.hp-num{font-family:'Fraunces',serif;font-size:1.65rem;font-weight:700;color:var(--G1);line-height:1;}
+.hp-sub{font-size:.68rem;color:var(--t3);margin-top:1px;font-weight:600;}
+
+/* ─── MARQUEE ─── */
+.mqbar{background:linear-gradient(135deg,#1a5e0e,#2d8f1c);padding:12px 0;overflow:hidden;box-shadow:0 4px 18px rgba(30,107,16,.24);}
+.mqt{display:flex;gap:32px;animation:mq 28s linear infinite;width:max-content;}
+.mqi{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.9);font-size:.77rem;font-weight:600;white-space:nowrap;letter-spacing:.04em;}
+.mqi i{color:rgba(255,245,130,.88);font-size:.74rem;}
+.mqs{color:rgba(255,255,255,.26);font-size:.48rem;}
+@keyframes mq{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ─── IMAGE STRIP 3col: rice_paddy + farmer_harvest + farmer_plough ─── */
+.istrip{display:grid;grid-template-columns:1fr 1fr 1fr;overflow:hidden;max-height:265px;}
+.is-item{position:relative;overflow:hidden;}
+.is-item img{width:100%;height:265px;object-fit:cover;display:block;filter:brightness(.68) saturate(1.12);transition:all .55s;}
+.is-item:hover img{filter:brightness(.85) saturate(1.22);transform:scale(1.04);}
+.is-lbl{position:absolute;bottom:14px;left:14px;background:rgba(255,252,228,.9);backdrop-filter:blur(12px);border:1px solid rgba(180,130,10,.22);border-radius:9px;padding:7px 13px;font-size:.73rem;font-weight:700;color:var(--t1);}
+
+/* ─── FEATURES ─── */
+.fw{max-width:1260px;margin:0 auto;padding:90px 56px;}
+.stag{display:inline-flex;align-items:center;gap:6px;background:rgba(45,143,28,.1);border:1px solid rgba(45,143,28,.2);color:var(--G1);padding:5px 13px;border-radius:99px;font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.stitle{font-family:'Fraunces',serif;font-size:clamp(1.6rem,3.8vw,2.4rem);font-weight:700;color:var(--t1);margin-bottom:9px;line-height:1.22;}
+.ssub{color:var(--t3);font-size:.87rem;max-width:490px;line-height:1.7;margin-bottom:46px;}
+.fg3{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;}
+.fcrd{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);padding:26px 22px;box-shadow:var(--sh);transition:all .34s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden;text-decoration:none;display:block;}
+.fcrd::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--W2),var(--G3));transform:scaleY(0);transition:transform .34s;transform-origin:top;}
+.fcrd:hover{transform:translateY(-5px);box-shadow:var(--shx);border-color:rgba(180,130,10,.28);}
+.fcrd:hover::before{transform:scaleY(1);}
+.fcrd-ico{width:52px;height:52px;border-radius:14px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;border:1.5px solid rgba(180,130,10,.16);}
+.fcrd-n{position:absolute;top:14px;right:16px;font-family:'Fraunces',serif;font-size:1.65rem;font-weight:700;color:rgba(180,130,10,.07);}
+.fcrd-t{font-weight:700;font-size:.93rem;color:var(--t1);margin-bottom:6px;}
+.fcrd-d{color:var(--t3);font-size:.78rem;line-height:1.62;}
+
+/* ─── ABOUT: 2-col image grid + text. farmer_seeds + crop_rows ─── */
+.about-sec{background:rgba(247,244,224,.72);border-top:1px solid rgba(180,130,10,.13);border-bottom:1px solid rgba(180,130,10,.13);padding:74px 0;}
+.about-in{max-width:1260px;margin:0 auto;padding:0 56px;display:grid;grid-template-columns:1fr 1fr;gap:66px;align-items:center;}
+.ab-imgs{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.abimg{border-radius:var(--rxl);overflow:hidden;box-shadow:var(--shm);position:relative;}
+.abimg img{width:100%;height:186px;object-fit:cover;display:block;transition:transform .5s;}
+.abimg:hover img{transform:scale(1.04);}
+.abimg-full{grid-column:1/-1;}
+.abimg-full img{height:160px;}
+.abbadge{position:absolute;bottom:10px;left:10px;background:rgba(255,252,228,.92);backdrop-filter:blur(14px);border:1px solid rgba(180,130,10,.2);border-radius:9px;padding:7px 12px;}
+.ab-num{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--G1);}
+.ab-lbl{font-size:.64rem;color:var(--t3);font-weight:600;}
+.ab-pts{display:flex;flex-direction:column;gap:13px;margin-top:18px;}
+.abpt{display:flex;align-items:flex-start;gap:11px;}
+.abico{width:27px;height:27px;border-radius:7px;background:rgba(45,143,28,.1);border:1px solid rgba(45,143,28,.2);color:var(--G2);display:flex;align-items:center;justify-content:center;font-size:.74rem;flex-shrink:0;margin-top:2px;}
+.abpt strong{display:block;font-size:.85rem;color:var(--t1);margin-bottom:2px;}
+.abpt span{font-size:.76rem;color:var(--t3);line-height:1.55;}
+
+/* ─── TRACTOR BANNER: tractor_field.jpg full-width ─── */
+.tbanner{position:relative;min-height:340px;overflow:hidden;display:flex;align-items:center;}
+.tbbg{position:absolute;inset:0;background:url('/static/images/tractor_field.jpg') center 55%/cover no-repeat;filter:brightness(.32) saturate(1.2);}
+.tbov{position:absolute;inset:0;background:linear-gradient(105deg,rgba(4,14,1,.88) 0%,rgba(14,40,5,.46) 50%,rgba(3,12,1,.82) 100%);}
+.tb-in{position:relative;z-index:2;max-width:1260px;margin:0 auto;padding:0 72px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.tbl h2{font-family:'Fraunces',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:#fff;line-height:1.22;margin-bottom:10px;}
+.tbl p{color:rgba(222,255,200,.72);font-size:.9rem;line-height:1.7;margin-bottom:26px;}
+.tb-glass{background:rgba(255,252,225,.12);backdrop-filter:blur(18px);border:1px solid rgba(180,130,10,.24);border-radius:var(--rxl);padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.tbst{text-align:center;padding:13px;background:rgba(255,255,255,.06);border-radius:11px;border:1px solid rgba(255,255,255,.09);}
+.tbn{font-family:'Fraunces',serif;font-size:1.85rem;font-weight:700;color:#f5cc5a;}
+.tblbl{font-size:.68rem;color:rgba(255,255,195,.68);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+
+/* ─── DUAL IMAGE STRIP: farmer_inspect + bullock_farm ─── */
+.dstrip{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;max-height:300px;}
+.dstrip-i{position:relative;overflow:hidden;}
+.dstrip-i img{width:100%;height:300px;object-fit:cover;display:block;filter:brightness(.65) saturate(1.15);transition:all .55s;}
+.dstrip-i:hover img{filter:brightness(.85) saturate(1.25);transform:scale(1.04);}
+.dstrip-lbl{position:absolute;bottom:16px;left:16px;background:rgba(255,252,228,.92);backdrop-filter:blur(12px);border:1px solid rgba(180,130,10,.22);border-radius:10px;padding:8px 14px;font-size:.74rem;font-weight:700;color:var(--t1);}
+.dstrip-lbl span{display:block;font-size:.67rem;color:var(--t3);font-weight:600;margin-top:1px;}
+
+/* ─── CTA: commercial_farm.webp ─── */
+.cta-sec{padding:76px 56px;max-width:1260px;margin:0 auto;}
+.cta-card{border-radius:var(--rxxl);overflow:hidden;position:relative;padding:76px 60px;text-align:center;}
+.cta-card::before{content:'';position:absolute;inset:0;background:url('/static/images/commercial_farm.webp') center/cover no-repeat;filter:brightness(.16) saturate(1.4);z-index:0;}
+.cta-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(20,65,8,.92),rgba(40,105,15,.86));z-index:1;}
+.cta-in{position:relative;z-index:2;}
+.cta-title{font-family:'Fraunces',serif;font-size:clamp(1.6rem,3.5vw,2.45rem);font-weight:700;color:#fff;margin-bottom:12px;}
+.cta-sub{color:rgba(228,255,192,.76);font-size:.93rem;margin-bottom:34px;max-width:450px;margin-left:auto;margin-right:auto;line-height:1.72;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+@media(max-width:900px){
+  .hcontent{padding:0 24px;}
+  .hpanel{display:none;}
+  .fg3,.dstrip,.istrip{grid-template-columns:1fr;}
+  .about-in{grid-template-columns:1fr;padding:0 24px;}
+  .tb-in{grid-template-columns:1fr;padding:0 26px;}
+  .fw,.cta-sec{padding:54px 22px;}
+  .about-sec{padding:48px 0;}
+}
+</style>
+{% endblock %}
+{% block body %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hbg"></div>
+  <div class="hov"></div>
+  <div class="hcontent">
+    <div class="hpill an"><span class="hdot"></span>AI-Powered Agriculture Platform</div>
+    <h1 class="htitle an a1">From <span class="gr">Seed</span> to <span class="gold">Golden Harvest</span></h1>
+    <p class="hdesc an a2">Predict the best crop for your soil, detect leaf diseases instantly, get fertilizer advice — intelligent AI tools built for every Indian farmer.</p>
+    <div class="hbtns an a3">
+      <a href="/register" class="hbp"><i class="fas fa-seedling"></i> Start Farming Smarter</a>
+      <a href="/log_in" class="hbg2"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+    </div>
+  </div>
+  <!-- Floating stats: wheat_harvest thumbnail -->
+  <div class="hpanel an a4">
+    <img src="/static/images/wheat_harvest.jpg" alt="Wheat Harvest">
+    <div class="hp-body">
+      <div class="hp-lbl"><i class="fas fa-chart-bar" style="margin-right:4px;"></i> Platform Stats</div>
+      <div class="hp-row"><div class="hp-num">22+</div><div class="hp-sub">Crops Supported</div></div>
+      <div class="hp-row"><div class="hp-num">95%</div><div class="hp-sub">ML Accuracy</div></div>
+      <div class="hp-row"><div class="hp-num">Free</div><div class="hp-sub">For All Farmers</div></div>
+    </div>
+  </div>
+  <div class="hfd"></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqbar">
+  <div class="mqt">
+    <span class="mqi"><i class="fas fa-seedling"></i>Crop Prediction</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-leaf"></i>Disease Detection</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-flask"></i>Fertilizer Advice</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-store"></i>E-Marketplace</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-tractor"></i>Smart Farming</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-newspaper"></i>Agri News</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-hand-holding-usd"></i>Govt Schemes</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-seedling"></i>Crop Prediction</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-leaf"></i>Disease Detection</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-flask"></i>Fertilizer Advice</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-store"></i>E-Marketplace</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-tractor"></i>Smart Farming</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-newspaper"></i>Agri News</span><span class="mqs">✦</span>
+    <span class="mqi"><i class="fas fa-hand-holding-usd"></i>Govt Schemes</span>
+  </div>
+</div>
+
+<!-- 3-IMAGE STRIP: rice_paddy + farmer_harvest + farmer_plough -->
+<div class="istrip an">
+  <div class="is-item"><img src="/static/images/rice_paddy.jpg" alt="Rice Paddy"><div class="is-lbl">🌾 Rice Cultivation</div></div>
+  <div class="is-item"><img src="/static/images/farmer_harvest.jpg" alt="Harvest"><div class="is-lbl">👨‍🌾 Harvest Season</div></div>
+  <div class="is-item"><img src="/static/images/farmer_plough.webp" alt="Ploughing"><div class="is-lbl">🐂 Traditional Farming</div></div>
+</div>
+
+<!-- FEATURES -->
+<div class="fw">
+  <div class="stag an a1"><i class="fas fa-tractor" style="margin-right:4px;"></i> Our AI Tools</div>
+  <h2 class="stitle an a2">Everything Your Farm Needs</h2>
+  <p class="ssub an a3">From soil analysis to the marketplace — AI-powered tools crafted for maximum yield and minimal loss.</p>
+  <div class="fg3">
+    <a href="/crop_prediction" class="fcrd an a1">
+      <span class="fcrd-n">01</span><div class="fcrd-ico fi-g"><i class="fas fa-seedling"></i></div>
+      <div class="fcrd-t">Crop Prediction</div>
+      <div class="fcrd-d">Enter soil N, P, K, pH, temperature and rainfall — get the most suitable crop recommendation from our Naive Bayes ML model.</div>
+    </a>
+    <a href="/crop_dis" class="fcrd an a2">
+      <span class="fcrd-n">02</span><div class="fcrd-ico fi-s"><i class="fas fa-leaf"></i></div>
+      <div class="fcrd-t">Disease Detection</div>
+      <div class="fcrd-d">Upload a leaf photo and our VGG19 deep learning model instantly detects crop diseases and suggests treatment.</div>
+    </a>
+    <a href="/fert_rec" class="fcrd an a3">
+      <span class="fcrd-n">03</span><div class="fcrd-ico fi-w"><i class="fas fa-flask"></i></div>
+      <div class="fcrd-t">Fertilizer Advisor</div>
+      <div class="fcrd-d">Get precise fertilizer recommendations based on your soil nutrients and crop type to significantly boost yield.</div>
+    </a>
+    <a href="/e_market" class="fcrd an a4">
+      <span class="fcrd-n">04</span><div class="fcrd-ico fi-o"><i class="fas fa-store"></i></div>
+      <div class="fcrd-t">E-Marketplace</div>
+      <div class="fcrd-d">Connect directly with verified vendors — buy and sell fresh produce at fair market prices without any middlemen.</div>
+    </a>
+    <a href="/news" class="fcrd an a5">
+      <span class="fcrd-n">05</span><div class="fcrd-ico fi-b"><i class="fas fa-newspaper"></i></div>
+      <div class="fcrd-t">Agriculture News</div>
+      <div class="fcrd-d">Stay updated with the latest farming news, government schemes, weather alerts and live market price trends.</div>
+    </a>
+    <a href="/loan1" class="fcrd an a6">
+      <span class="fcrd-n">06</span><div class="fcrd-ico fi-w"><i class="fas fa-hand-holding-usd"></i></div>
+      <div class="fcrd-t">Loans & Insurance</div>
+      <div class="fcrd-d">Explore PM-KISAN, Kisan Credit Card, PMFBY crop insurance and other government financial support schemes.</div>
+    </a>
+  </div>
+</div>
+
+<!-- ABOUT: farmer_seeds + crop_rows -->
+<div class="about-sec">
+  <div class="about-in">
+    <div class="ab-imgs an a1">
+      <div class="abimg">
+        <img src="/static/images/farmer_seeds.jpg" alt="Farmer Sowing">
+        <div class="abbadge"><div class="ab-num">10K+</div><div class="ab-lbl">Farmers</div></div>
+      </div>
+      <div class="abimg">
+        <img src="/static/images/crop_rows.jpg" alt="Crop Rows">
+        <div class="abbadge"><div class="ab-num">22+</div><div class="ab-lbl">Crops</div></div>
+      </div>
+      <div class="abimg abimg-full">
+        <img src="/static/images/farmer_inspect.jpg" alt="Inspection" style="object-position:center 35%;">
+      </div>
+    </div>
+    <div class="an a2">
+      <div class="stag" style="margin-bottom:10px;"><i class="fas fa-info-circle" style="margin-right:4px;"></i> About AgriSmart</div>
+      <h2 class="stitle" style="font-size:1.65rem;margin-bottom:13px;">Built for the Indian Farmer, Powered by AI</h2>
+      <p style="color:var(--t3);font-size:.87rem;line-height:1.76;margin-bottom:18px;">AgriSmart combines the power of machine learning with deep knowledge of Indian agriculture — delivering practical, accurate tools that work even on a basic mobile phone in the field.</p>
+      <div class="ab-pts">
+        <div class="abpt"><div class="abico"><i class="fas fa-check"></i></div><div><strong>Trained on Indian Soil Data</strong><span>ML models trained on datasets specific to Indian agricultural conditions and crop varieties</span></div></div>
+        <div class="abpt"><div class="abico"><i class="fas fa-check"></i></div><div><strong>Instant Leaf Disease Detection</strong><span>Upload any leaf photo — get disease diagnosis and treatment advice in under 5 seconds</span></div></div>
+        <div class="abpt"><div class="abico"><i class="fas fa-check"></i></div><div><strong>100% Free for Farmers</strong><span>All core AI tools are completely free — no hidden charges, no subscriptions ever</span></div></div>
+      </div>
+      <a href="/register" class="hbp" style="margin-top:26px;display:inline-flex;"><i class="fas fa-user-plus"></i> Join Free Today</a>
+    </div>
+  </div>
+</div>
+
+<!-- TRACTOR BANNER -->
+<div class="tbanner">
+  <div class="tbbg"></div><div class="tbov"></div>
+  <div class="tb-in">
+    <div class="tbl an a1">
+      <h2>Modern AI Meets Traditional Indian Farming</h2>
+      <p>From bullock-ploughed fields to GPS-guided tractors — AgriSmart AI tools work for every scale of farming with equal power.</p>
+      <a href="/register" class="hbp" style="width:fit-content;"><i class="fas fa-seedling"></i> Get Started Free</a>
+    </div>
+    <div class="tb-glass an a2">
+      <div class="tbst"><div class="tbn">95%</div><div class="tblbl">Accuracy</div></div>
+      <div class="tbst"><div class="tbn">22+</div><div class="tblbl">Crops</div></div>
+      <div class="tbst"><div class="tbn">4</div><div class="tblbl">AI Models</div></div>
+      <div class="tbst"><div class="tbn">Free</div><div class="tblbl">Forever</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DUAL STRIP: farmer_inspect + bullock_farm -->
+<div class="dstrip an">
+  <div class="dstrip-i">
+    <img src="/static/images/bullock_farm.jpg" alt="Bullock Farming">
+    <div class="dstrip-lbl">🐂 Traditional Roots<span>Supporting all farm sizes</span></div>
+  </div>
+  <div class="dstrip-i">
+    <img src="/static/images/farmer_seeds.jpg" alt="Sowing Seeds">
+    <div class="dstrip-lbl">🌱 Seed to Harvest<span>AI-guided crop cycle</span></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-sec">
+  <div class="cta-card an a2">
+    <div class="cta-in">
+      <h2 class="cta-title">Ready to Grow Smarter This Season?</h2>
+      <p class="cta-sub">Register free and get instant access to crop prediction, disease detection, fertilizer advice and the marketplace.</p>
+      <div class="cta-btns">
+        <a href="/register" class="hbp"><i class="fas fa-seedling"></i> Create Free Account</a>
+        <a href="/log_in" class="hbg2"><i class="fas fa-tractor"></i> Already a Member</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

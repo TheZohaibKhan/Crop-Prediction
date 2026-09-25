@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vendor Dashboard | AgriSmart</title>
+  <link rel="icon" href="/static/images/agri_icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  :root{--G1:#1e6b10;--G2:#2d8f1c;--G3:#4ab530;--G4:#7dd65f;--W1:#b87c08;--W2:#d4960e;--W3:#f0b429;--W4:#fcd96a;--W5:#fff8e1;--S1:#6b2e08;--S2:#9b4515;--cream:#fdfaf2;--card:rgba(255,252,235,0.84);--cardb:rgba(180,130,10,0.20);--t1:#0f1e05;--t2:#1e3d0a;--t3:#3d6020;--t4:#6b8c45;--t5:#9aaa72;--r:10px;--rl:16px;--rxl:22px;--rxxl:28px;--sh:0 2px 10px rgba(60,35,0,.07),0 6px 22px rgba(60,35,0,.06);--shm:0 8px 30px rgba(60,35,0,.12);--shx:0 16px 50px rgba(60,35,0,.18);}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--t1);min-height:100vh;overflow-x:hidden;}
+  .sky{position:fixed;inset:0;z-index:0;background:linear-gradient(175deg,#fffef5 0%,#fdf8e2 60%,#f8f1d0 100%);}
+  #pts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+  .pt{position:absolute;border-radius:50%;animation:ptR linear infinite;}
+  @keyframes ptR{0%{transform:translateY(105vh) scale(.3);opacity:0;}8%{opacity:.8;}90%{opacity:.35;}100%{transform:translateY(-8vh) translateX(var(--dx)) scale(1);opacity:0;}}
+
+  .topbar{background:linear-gradient(135deg,var(--G1),var(--G2));height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;font-size:.74rem;color:rgba(255,255,255,.88);font-weight:500;position:fixed;top:0;left:0;right:0;z-index:1001;}
+  .topbar i{color:var(--W4);font-size:.7rem;margin-right:4px;}
+  .tsocial{display:flex;gap:10px;}
+  .tsocial a{color:rgba(255,255,255,.72);font-size:.76rem;transition:color .2s;}
+  .tsocial a:hover{color:var(--W4);}
+
+  .nav{position:fixed;top:36px;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(255,253,238,.92);backdrop-filter:blur(22px) saturate(170%);border-bottom:1.5px solid rgba(180,130,10,.16);box-shadow:0 2px 16px rgba(60,35,0,.07);}
+  .nbrand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nbrand img{width:34px;filter:drop-shadow(0 2px 5px rgba(110,70,0,.28));}
+  .nbrand-txt{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);}
+  .nbrand-txt b{color:var(--G2);}
+  .vendor-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(30,107,16,.1);border:1px solid rgba(30,107,16,.2);color:var(--G1);padding:3px 11px;border-radius:99px;font-size:.68rem;font-weight:700;margin-left:8px;}
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .nav-user{font-size:.8rem;color:var(--t4);}
+  .nav-user strong{color:var(--t2);}
+  .nav-logout{padding:8px 16px;border-radius:99px;background:transparent;border:1.5px solid rgba(192,64,64,.22);color:#c04040;font-size:.8rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .22s;}
+  .nav-logout:hover{background:rgba(192,64,64,.08);border-color:rgba(192,64,64,.38);}
+
+  .pw{padding-top:100px;position:relative;z-index:10;}
+  .app{display:flex;min-height:calc(100vh - 100px);}
+
+  .sb{width:254px;min-height:calc(100vh - 100px);position:fixed;top:100px;left:0;z-index:100;overflow-y:auto;padding:0;background:rgba(255,253,235,.94);backdrop-filter:blur(24px) saturate(165%);border-right:1.5px solid rgba(180,130,10,.15);box-shadow:3px 0 20px rgba(60,35,0,.06);}
+  .sb-img-overlay{position:relative;margin-bottom:18px;}
+  .sb-img{width:100%;height:88px;object-fit:cover;display:block;filter:brightness(.65) saturate(1.1);}
+  .sb-img-overlay::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(255,253,235,1) 0%,transparent 60%);}
+  .sbu{text-align:center;padding:0 18px 18px;border-bottom:1px solid rgba(180,130,10,.12);margin-bottom:14px;}
+  .sbav{width:58px;height:58px;border-radius:50%;margin:0 auto 11px;background:linear-gradient(135deg,var(--S1),var(--S2));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:#fff;box-shadow:0 4px 14px rgba(107,46,8,.28),0 0 0 3px rgba(212,150,14,.2);}
+  .sbn{font-weight:700;font-size:.9rem;color:var(--t1);}
+  .sbr{display:inline-flex;align-items:center;gap:4px;margin-top:5px;background:rgba(180,130,10,.1);border:1px solid rgba(180,130,10,.2);color:var(--W1);padding:2px 10px;border-radius:99px;font-size:.66rem;font-weight:700;letter-spacing:.05em;}
+  .sb-nav{padding:0 11px;}
+  .sb-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--t5);padding:0 11px;margin:15px 0 4px;}
+  .slink{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r);margin-bottom:2px;color:var(--t4);font-weight:600;font-size:.83rem;text-decoration:none;transition:all .22s;border:1px solid transparent;}
+  .slink i{width:16px;text-align:center;font-size:.8rem;transition:transform .2s;}
+  .slink:hover{background:rgba(240,180,41,.14);color:var(--G1);border-color:rgba(180,130,10,.17);padding-left:17px;}
+  .slink:hover i{transform:scale(1.14);}
+  .slink.act{background:rgba(30,107,16,.1);color:var(--G1);font-weight:700;border-color:rgba(30,107,16,.2);}
+  .slink.lo{color:#c04040;}
+  .slink.lo:hover{background:rgba(192,64,64,.08);}
+  .mc{margin-left:254px;flex:1;padding:28px;}
+
+  .wb{border-radius:var(--rxxl);overflow:hidden;position:relative;margin-bottom:26px;padding:32px 38px;}
+  .wb-bg{position:absolute;inset:0;background:url('/static/images/commercial_farm.webp') center/cover no-repeat;filter:brightness(.28) saturate(1.2);}
+  .wb-ov{position:absolute;inset:0;background:linear-gradient(120deg,rgba(4,18,1,.88) 0%,rgba(16,52,6,.5) 50%,rgba(3,14,1,.85) 100%);}
+  .wb-shine{position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);animation:shine 8s ease-in-out infinite;}
+  @keyframes shine{0%,100%{left:-120%;}50%{left:130%;}}
+  .wb-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;}
+  .wb-text h2{font-family:'Fraunces',serif;font-size:1.55rem;font-weight:700;color:#fff;margin-bottom:4px;}
+  .wb-text p{color:rgba(210,255,180,.7);font-size:.86rem;}
+  .wb-badge{background:rgba(180,130,10,.2);border:1px solid rgba(212,160,20,.3);backdrop-filter:blur(12px);color:#f5cc5a;padding:8px 16px;border-radius:var(--rl);font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:7px;}
+  .wb-emoji{font-size:3rem;animation:flt 5s ease-in-out infinite;margin-left:16px;}
+  @keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+  .srow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px;}
+  .stcard{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);padding:18px;display:flex;align-items:center;gap:13px;box-shadow:var(--sh);transition:all .25s;}
+  .stcard:hover{transform:translateY(-2px);box-shadow:var(--shm);}
+  .stico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
+  .stv{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--G1);line-height:1;}
+  .stlb{color:var(--t4);font-size:.7rem;margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+
+  .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+  .ptitle{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:700;color:var(--t1);}
+  .psub{color:var(--t4);font-size:.83rem;margin-top:3px;}
+  .cart-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;font-weight:700;font-size:.84rem;cursor:pointer;border:none;font-family:inherit;transition:all .25s;box-shadow:0 4px 16px rgba(30,107,16,.35);}
+  .cart-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(30,107,16,.5);}
+  .cart-count{background:rgba(255,255,255,.22);padding:1px 8px;border-radius:99px;font-size:.72rem;}
+  .crop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:17px;}
+  .crop-card{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh);transition:all .32s cubic-bezier(.34,1.2,.64,1);position:relative;}
+  .crop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--W2),var(--G3));transform:scaleX(0);transition:transform .32s;z-index:1;}
+  .crop-card:hover{transform:translateY(-5px);box-shadow:var(--shx);border-color:rgba(180,130,10,.28);}
+  .crop-card:hover::before{transform:scaleX(1);}
+  .crop-img{width:100%;height:170px;object-fit:cover;display:block;}
+  .crop-info{padding:15px 16px;}
+  .add-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border-radius:99px;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;font-weight:700;font-size:.81rem;border:none;cursor:pointer;font-family:inherit;transition:all .25s;box-shadow:0 3px 12px rgba(30,107,16,.3);}
+  .add-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,107,16,.48);}
+  .empty{grid-column:1/-1;text-align:center;padding:64px 20px;color:var(--t5);}
+  .empty i{font-size:2.8rem;margin-bottom:14px;opacity:.35;}
+
+  .modal-ov{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;}
+  .modal-ov.open{display:flex;}
+  .modal-box{background:rgba(255,253,238,.97);backdrop-filter:blur(24px);border:1.5px solid rgba(180,130,10,.2);border-radius:var(--rxxl);width:90%;max-width:720px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shx);animation:mpop .35s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes mpop{from{opacity:0;transform:scale(.9) translateY(20px);}to{opacity:1;transform:none;}}
+  .modal-box::before{content:'';height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2));}
+  .modal-header{padding:20px 24px;border-bottom:1px solid rgba(180,130,10,.12);display:flex;align-items:center;justify-content:space-between;}
+  .modal-header h3{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;color:var(--t1);}
+  .modal-close{width:30px;height:30px;border-radius:8px;border:1px solid rgba(180,130,10,.18);background:rgba(255,252,228,.8);cursor:pointer;color:var(--t4);font-size:.88rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .modal-close:hover{background:rgba(192,64,64,.1);color:#c04040;}
+  .modal-body{padding:20px 24px;overflow-y:auto;flex:1;}
+
+  .tcon{position:fixed;top:82px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:9px;}
+  .tst{padding:12px 16px;border-radius:var(--rl);font-size:.84rem;font-weight:600;display:flex;align-items:center;gap:9px;background:rgba(255,253,238,.97);border:1px solid rgba(180,130,10,.26);color:var(--t1);box-shadow:var(--shm);animation:tIn .4s cubic-bezier(.34,1.56,.64,1);}
+  .tst i{color:var(--G2);}
+  @keyframes tIn{from{opacity:0;transform:translateX(40px) scale(.9);}to{opacity:1;transform:none;}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+  .an{opacity:0;animation:fadeUp .55s cubic-bezier(.22,1,.36,1) forwards;}
+  .a2{animation-delay:.14s;}.a3{animation-delay:.22s;}
+  ::-webkit-scrollbar{width:5px;background:var(--W5);}::-webkit-scrollbar-thumb{background:rgba(180,130,10,.28);border-radius:3px;}
+  </style>
+</head>
+<body>
+<div class="sky"></div>
+<div id="pts"></div>
+<div class="tcon" id="tcon"></div>
+
+{% for message in messages %}
+<script>
+(function(){var el=document.createElement('div');el.className='tst';el.innerHTML='<i class="fas fa-check-circle"></i><span>{{ message }}</span>';document.getElementById('tcon').appendChild(el);setTimeout(function(){el.style.transition='all .4s';el.style.opacity='0';el.style.transform='translateX(30px)';setTimeout(function(){el.remove();},400);},3500);})();
+</script>
+{% endfor %}
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <span><i class="fas fa-map-marker-alt"></i>AgriSmart Platform</span>
+    <span><i class="fas fa-store"></i>Vendor Portal</span>
+  </div>
+  <div class="tsocial">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-youtube"></i></a>
+  </div>
+</div>
+
+<nav class="nav">
+  <div style="display:flex;align-items:center;">
+    <a href="/" class="nbrand"><img src="/static/images/agri_icon.png" alt=""><span class="nbrand-txt">Agri<b>Smart</b></span></a>
+    <span class="vendor-badge"><i class="fas fa-store"></i> Vendor Portal</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user"><i class="fas fa-user-circle" style="color:var(--G2);margin-right:4px;"></i>Welcome, <strong>{{ vendor.first_name }}</strong></span>
+    <a href="/log_out" class="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+<div class="pw">
+  <div class="app">
+    <aside class="sb">
+      <div class="sb-img-overlay"><img src="/static/images/farmer_harvest.jpg" alt="" class="sb-img"></div>
+      <div class="sbu">
+        <div class="sbav">{{ vendor.first_name|first|upper }}{{ vendor.last_name|first|upper }}</div>
+        <div class="sbn">{{ vendor.first_name }} {{ vendor.last_name }}</div>
+        <div class="sbr">🏪 Vendor</div>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-lbl">Navigation</div>
+        <a href="#" class="slink act"><i class="fas fa-store"></i> Crop Listings</a>
+        <a href="#" onclick="openCart();return false;" class="slink"><i class="fas fa-shopping-cart"></i> My Cart <span style="margin-left:auto;background:rgba(30,107,16,.15);color:var(--G1);padding:1px 8px;border-radius:99px;font-size:.66rem;font-weight:800;">{{ cart_items|length }}</span></a>
+        <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+        <div class="sb-lbl">Account</div>
+        <a href="/vendor_edit_profile" class="slink"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.1);">
+          <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="mc">
+      <div class="wb an">
+        <div class="wb-bg"></div><div class="wb-ov"></div><div class="wb-shine"></div>
+        <div class="wb-content">
+          <div class="wb-text"><h2>Vendor Marketplace 🏪</h2><p>Browse and purchase fresh crops directly from farmers</p></div>
+          <div class="wb-badge"><i class="fas fa-shopping-cart"></i> {{ cart_items|length }} Items in Cart</div>
+          <div class="wb-emoji">🌾</div>
+        </div>
+      </div>
+
+      <div class="srow an a2">
+        <div class="stcard"><div class="stico" style="background:rgba(45,143,28,.1);color:var(--G2);"><i class="fas fa-store"></i></div><div><div class="stv">{{ images|length }}</div><div class="stlb">Listings Available</div></div></div>
+        <div class="stcard"><div class="stico" style="background:rgba(180,130,10,.1);color:var(--W1);"><i class="fas fa-shopping-cart"></i></div><div><div class="stv">{{ cart_items|length }}</div><div class="stlb">In Your Cart</div></div></div>
+        <div class="stcard"><div class="stico" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-tractor"></i></div><div><div class="stv">Fresh</div><div class="stlb">Direct from Farm</div></div></div>
+      </div>
+
+      <div class="page-header an a3">
+        <div><div class="ptitle">Available Crop Listings</div><div class="psub">Browse crops from verified farmers – click a card for details</div></div>
+        <button class="cart-btn" onclick="openCart()"><i class="fas fa-shopping-cart"></i> My Cart <span class="cart-count" id="cart-badge">{{ cart_items|length }}</span></button>
+      </div>
+
+      <div class="crop-grid an a3">
+        {% for item in images %}
+        <div class="crop-card">
+          <div style="position:relative;">
+            <img src="{{ item.Images.url }}" alt="{{ item.crop_type }}" class="crop-img">
+            <div style="position:absolute;top:10px;left:10px;background:rgba(30,107,16,.88);color:#fff;padding:3px 10px;border-radius:99px;font-size:.66rem;font-weight:700;backdrop-filter:blur(6px);">{{ item.crop_type }}</div>
+            {% if item.price %}<div style="position:absolute;top:10px;right:10px;background:rgba(180,130,10,.88);color:#fff;padding:3px 10px;border-radius:99px;font-size:.68rem;font-weight:800;backdrop-filter:blur(6px);">₹{{ item.price }}/kg</div>{% endif %}
+          </div>
+          <div class="crop-info">
+            <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:5px;">{{ item.crop_type }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+              <span style="display:flex;align-items:center;gap:4px;font-size:.76rem;color:var(--t4);"><i class="fas fa-weight-hanging" style="color:var(--W2);"></i> {{ item.quantity }} KG available</span>
+              {% if item.price %}<span style="display:flex;align-items:center;gap:4px;font-size:.76rem;color:var(--G1);font-weight:700;"><i class="fas fa-rupee-sign"></i> ₹{{ item.price }}/kg</span>{% endif %}
+            </div>
+            {% if item.location %}<div style="font-size:.73rem;color:var(--t5);margin-bottom:6px;"><i class="fas fa-map-marker-alt" style="color:var(--S2);margin-right:3px;"></i>{{ item.location }}</div>{% endif %}
+            <div style="font-size:.72rem;color:var(--t4);margin-bottom:10px;display:flex;align-items:center;gap:5px;"><i class="fas fa-user-circle" style="color:var(--G2);"></i><span>{{ item.user.get_full_name|default:item.user.username }}</span></div>
+            {% if item.notes %}<div style="font-size:.72rem;color:var(--t4);background:rgba(255,248,205,.6);border-radius:8px;padding:7px 10px;margin-bottom:10px;line-height:1.5;border:1px solid rgba(180,130,10,.12);"><i class="fas fa-info-circle" style="color:var(--W2);margin-right:4px;"></i>{{ item.notes }}</div>{% endif %}
+            {% if item.price and item.quantity > 0 %}<div style="font-size:.8rem;font-weight:700;color:var(--G1);background:rgba(45,143,28,.07);border-radius:8px;padding:7px 10px;margin-bottom:10px;border:1px solid rgba(45,143,28,.15);">Total value: ₹{{ item.price }} × {{ item.quantity }} kg = <strong>₹{% widthratio item.price 1 item.quantity %}</strong></div>{% endif %}
+            <div style="display:flex;gap:8px;">
+              <form method="POST" action="{% url 'add_to_cart' item.id %}" style="flex:1;">{% csrf_token %}<button type="submit" class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button></form>
+              <button onclick="openInquiry('{{ item.crop_type }}','{{ item.quantity }}','{{ item.price|default:'N/A' }}','{{ item.user.get_full_name|default:item.user.username }}', {{ item.id }})" style="padding:10px 12px;border-radius:99px;background:rgba(180,130,10,.1);border:1.5px solid rgba(180,130,10,.25);color:var(--W1);cursor:pointer;font-size:.78rem;font-weight:700;transition:all .2s;font-family:inherit;" onmouseover="this.style.background='rgba(180,130,10,.18)'" onmouseout="this.style.background='rgba(180,130,10,.1)'"><i class="fas fa-envelope"></i></button>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="empty"><i class="fas fa-box-open"></i><p>No crop listings available yet.</p></div>
+        {% endfor %}
+      </div>
+
+      <!-- MY CONVERSATIONS SECTION -->
+      {% if vendor_inquiries %}
+      <div class="ph an a4" style="margin-top:28px;">
+        <div class="ph-row">
+          <div class="ph-ico fi-w"><i class="fas fa-comments"></i></div>
+          <div><div class="ptitle">My Conversations</div><div class="psub">Messages and replies from farmers you've contacted</div></div>
+        </div>
+      </div>
+      <div class="an a4" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+        {% for msg in vendor_inquiries %}
+        <div class="gc">
+          <div class="gcb" style="display:flex;gap:14px;align-items:flex-start;">
+            <div style="flex-shrink:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--G1),var(--G2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;">
+              {% if msg.direction == 'VF' %}V{% else %}F{% endif %}
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-weight:700;color:var(--t1);font-size:.9rem;margin-bottom:2px;">
+                  {% if msg.direction == 'VF' %}You{% else %}{{ msg.farmer.get_full_name|default:msg.farmer.username }}{% endif %}
+                  <span style="font-weight:500;color:var(--t4);font-size:.78rem;">&nbsp;· {{ msg.created_at|date:"d M Y, h:i A" }}</span>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button onclick="toggleVReplyForm(this)" style="padding:4px 10px;border-radius:99px;background:rgba(30,107,16,.08);border:1px solid rgba(30,107,16,.2);color:var(--G1);font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:all .2s;"><i class="fas fa-reply"></i> Reply</button>
+                  <form method="POST" action="{% url 'delete_vendor_inquiry' msg.id %}" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" style="padding:4px 10px;border-radius:99px;background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.2);color:#c04040;font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:all .2s;" onclick="return confirm('Delete this conversation?');"><i class="fas fa-trash"></i> Delete</button>
+                  </form>
+                </div>
+              </div>
+              {% if msg.listing %}<div style="font-size:.82rem;color:var(--t3);margin-bottom:6px;">Crop: <strong>{{ msg.listing.crop_type }}</strong> · Qty: {{ msg.listing.quantity }} KG · Price: ₹{{ msg.listing.price }}/kg</div>{% endif %}
+              <div style="font-size:.82rem;color:var(--t2);background:rgba(255,248,205,.65);border-radius:10px;padding:10px;line-height:1.5;border:1px solid rgba(180,130,10,.12);">
+                <i class="fas fa-quote-left" style="color:var(--W2);opacity:.6;margin-right:4px;"></i>{{ msg.message|linebreaksbr }}
+              </div>
+              <div style="margin-top:6px;font-size:.72rem;color:var(--t5);">
+                <i class="fas fa-envelope" style="margin-right:3px;"></i>{{ msg.farmer.username }}
+              </div>
+
+              <!-- Inline vendor reply form (hidden) -->
+              <div class="vendor-reply-form" style="display:none; margin-top:10px;">
+                <form method="POST" action="{% url 'vendor_reply_inquiry' msg.id %}">
+                  {% csrf_token %}
+                  <textarea name="vendor_reply" rows="3" style="width:100%;border:1.5px solid var(--G2);border-radius:var(--r);padding:8px 10px;font-family:inherit;font-size:.82rem;color:var(--t1);background:rgba(255,252,228,.7);resize:vertical;outline:none;" placeholder="Type your reply..."></textarea>
+                  <div style="display:flex;gap:6px;margin-top:6px;">
+                    <button type="submit" style="padding:6px 14px;border-radius:99px;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;border:none;font-weight:700;font-size:.76rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;"><i class="fas fa-paper-plane"></i> Send</button>
+                    <button type="button" onclick="this.closest('.vendor-reply-form').style.display='none'" style="padding:6px 14px;border-radius:99px;background:rgba(0,0,0,.05);border:1.5px solid rgba(180,130,10,.2);color:var(--t5);font-weight:700;font-size:.76rem;cursor:pointer;font-family:inherit;">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- CART MODAL (unchanged) -->
+      <div class="modal-ov" id="cartModal">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3><i class="fas fa-shopping-cart" style="color:var(--G2);margin-right:8px;"></i>My Cart — {{ cart_items|length }} item{{ cart_items|length|pluralize }}</h3>
+            <button class="modal-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body">
+            {% if cart_items %}
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+              {% for item in cart_items %}
+              <div style="display:flex;gap:14px;align-items:flex-start;background:rgba(255,252,225,.8);border:1px solid rgba(180,130,10,.14);border-radius:var(--rl);overflow:hidden;padding:0;">
+                <img src="{{ item.Images.url }}" alt="{{ item.crop_type }}" style="width:90px;height:90px;object-fit:cover;flex-shrink:0;">
+                <div style="flex:1;padding:12px 0;min-width:0;">
+                  <div style="font-family:'Fraunces',serif;font-weight:700;font-size:.95rem;color:var(--t1);margin-bottom:3px;">{{ item.crop_type }}</div>
+                  <div style="font-size:.76rem;color:var(--t4);margin-bottom:2px;"><i class="fas fa-user-circle" style="color:var(--G2);margin-right:3px;"></i>{{ item.user.get_full_name|default:item.user.username }}</div>
+                  <div style="display:flex;gap:12px;font-size:.76rem;margin-bottom:2px;">
+                    <span style="color:var(--t4);"><i class="fas fa-weight-hanging" style="color:var(--W2);margin-right:3px;"></i>{{ item.quantity }} KG</span>
+                    {% if item.price %}<span style="color:var(--G1);font-weight:700;"><i class="fas fa-rupee-sign" style="margin-right:2px;"></i>₹{{ item.price }}/kg</span>{% endif %}
+                  </div>
+                  {% if item.location %}<div style="font-size:.72rem;color:var(--t5);"><i class="fas fa-map-marker-alt" style="color:var(--S2);margin-right:3px;"></i>{{ item.location }}</div>{% endif %}
+                </div>
+                <div style="padding:12px 14px 12px 0;flex-shrink:0;">
+                  {% if item.price and item.quantity > 0 %}<div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--G1);text-align:right;margin-bottom:8px;">₹{% widthratio item.price 1 item.quantity %}</div>{% endif %}
+                  <form method="POST" action="{% url 'remove_from_cart' item.id %}">{% csrf_token %}
+                    <button type="submit" style="padding:6px 12px;border-radius:99px;background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.2);color:#c04040;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all .2s;" onmouseover="this.style.background='rgba(192,64,64,.16)'" onmouseout="this.style.background='rgba(192,64,64,.08)'"><i class="fas fa-trash-alt"></i> Remove</button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <form method="POST" action="{% url 'send_cart_inquiry' %}">
+              {% csrf_token %}
+              <div style="background:linear-gradient(135deg,rgba(30,107,16,.07),rgba(45,143,28,.04));border:1.5px solid rgba(45,143,28,.18);border-radius:var(--rl);padding:18px;">
+                <div style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t5);margin-bottom:12px;"><i class="fas fa-receipt" style="margin-right:5px;"></i>Order Summary</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                  <span style="font-size:.85rem;color:var(--t3);">{{ cart_items|length }} listing{{ cart_items|length|pluralize }} in cart</span>
+                  <span style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--G1);">Ready to Order</span>
+                </div>
+                <div style="margin-bottom:14px;">
+                  <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t5);display:block;margin-bottom:6px;">Message to all farmers*</label>
+                  <textarea name="cart_message" style="width:100%;border:1.5px solid rgba(180,130,10,.22);border-radius:var(--r);padding:10px 12px;font-family:inherit;font-size:.84rem;color:var(--t1);background:rgba(255,252,228,.7);resize:vertical;outline:none;" rows="4" placeholder="Hello, I am interested in buying your crops. Please let me know delivery options and payment method." required></textarea>
+                </div>
+                <div style="font-size:.78rem;color:var(--t4);margin-bottom:14px;line-height:1.6;padding:10px;background:rgba(255,248,205,.6);border-radius:8px;border:1px solid rgba(180,130,10,.12);"><i class="fas fa-info-circle" style="color:var(--W2);margin-right:5px;"></i>This will send an email inquiry to each farmer in your cart. Your cart will be emptied after sending.</div>
+                <button type="submit" class="cart-btn" style="display:flex;justify-content:center;text-decoration:none;width:100%;margin-bottom:9px;"><i class="fas fa-paper-plane"></i> Send Purchase Inquiries</button>
+                <a href="https://agmarknet.gov.in/" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;border-radius:99px;border:1.5px solid rgba(180,130,10,.22);color:var(--W1);font-weight:700;font-size:.81rem;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(180,130,10,.08)'" onmouseout="this.style.background='transparent'"><i class="fas fa-chart-line"></i> Check Market Prices Before Buying</a>
+              </div>
+            </form>
+            {% else %}
+            <div class="empty"><i class="fas fa-shopping-cart"></i><p style="margin-top:12px;">Your cart is empty.</p></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- INQUIRY MODAL (unchanged) -->
+      <div class="modal-ov" id="inquiryModal">
+        <div class="modal-box" style="max-width:480px;">
+          <div class="modal-header">
+            <h3><i class="fas fa-envelope" style="color:var(--W2);margin-right:8px;"></i>Send Purchase Inquiry</h3>
+            <button class="modal-close" onclick="document.getElementById('inquiryModal').classList.remove('open')"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="" id="inquiryForm">
+              {% csrf_token %}
+              <div id="inquiry-details" style="background:rgba(255,248,205,.7);border:1px solid rgba(180,130,10,.18);border-radius:var(--rl);padding:14px;margin-bottom:18px;font-size:.84rem;color:var(--t2);line-height:1.7;"></div>
+              <div style="margin-bottom:14px;">
+                <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t5);display:block;margin-bottom:6px;">Your Message to Farmer*</label>
+                <textarea name="message" id="inquiry-msg" style="width:100%;border:1.5px solid rgba(180,130,10,.22);border-radius:var(--r);padding:10px 12px;font-family:inherit;font-size:.84rem;color:var(--t1);background:rgba(255,252,228,.7);resize:vertical;outline:none;" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="cart-btn" style="width:100%;justify-content:center;"><i class="fas fa-paper-plane"></i> Send Inquiry</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+function openCart() { document.getElementById('cartModal').classList.add('open'); }
+function closeCart() { document.getElementById('cartModal').classList.remove('open'); }
+document.getElementById('cartModal').addEventListener('click', function(e) { if(e.target===this) closeCart(); });
+document.getElementById('inquiryModal').addEventListener('click', function(e) { if(e.target===this) this.classList.remove('open'); });
+
+function openInquiry(crop, qty, price, farmer, listingId) {
+  document.getElementById('inquiry-details').innerHTML = '<strong style="color:var(--t1);">'+crop+'</strong><br><span style="color:var(--t4);">Farmer: '+farmer+'</span><br><span style="color:var(--t4);">Quantity: '+qty+' KG &nbsp;|&nbsp; Price: ₹'+price+'/kg</span>';
+  document.getElementById('inquiry-msg').value = '';
+  document.getElementById('inquiryForm').action = '/send_listing_inquiry/'+listingId+'/';
+  document.getElementById('inquiryModal').classList.add('open');
+}
+
+function toggleVReplyForm(button) {
+  var form = button.closest('.gc').querySelector('.vendor-reply-form');
+  form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+}
+
+(function(){var c=document.getElementById('pts');var cols=['rgba(200,145,15,.5)','rgba(235,175,35,.42)','rgba(170,205,70,.38)','rgba(225,160,25,.44)'];for(var i=0;i<22;i++){var p=document.createElement('div');p.className='pt';var s=Math.random()*3.5+1.5;p.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(Math.random()*100)+'%;bottom:-10px;background:'+cols[i%cols.length]+';animation-duration:'+(Math.random()*18+12)+'s;animation-delay:'+(Math.random()*24)+'s;--dx:'+((Math.random()-.5)*160)+'px;';c.appendChild(p);}})();
+var ob=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.style.animationPlayState='running';});},{threshold:.1});
+document.querySelectorAll('.an').forEach(function(el){el.style.animationPlayState='paused';ob.observe(el);});
+</script>
+</body>
+</html>

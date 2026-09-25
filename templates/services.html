@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}Our Services{% endblock %}
+{% block extra_head %}
+<style>
+.services-hero{border-radius:var(--rxxl);overflow:hidden;position:relative;padding:58px 52px;margin-bottom:36px;}
+.services-hero-bg{position:absolute;inset:0;background:url('/static/images/farmer_plough.webp') center 55%/cover no-repeat;filter:brightness(.22) saturate(1.3);}
+.services-hero-ov{position:absolute;inset:0;background:linear-gradient(125deg,rgba(4,20,1,.93) 0%,rgba(20,60,5,.6) 55%,rgba(3,15,1,.9) 100%);}
+.services-hero-content{position:relative;z-index:1;}
+.service-icon-hero{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;border:2px solid rgba(255,255,255,.12);}
+.big-service{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.bscard{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxxl);padding:30px;box-shadow:var(--sh);position:relative;overflow:hidden;transition:all .32s cubic-bezier(.34,1.2,.64,1);}
+.bscard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--W2),var(--G3));}
+.bscard:hover{transform:translateY(-4px);box-shadow:var(--shx);border-color:rgba(180,130,10,.3);}
+.bscard-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;}
+.bscard-title{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--t1);margin-bottom:8px;}
+.bscard-desc{font-size:.83rem;color:var(--t3);line-height:1.72;margin-bottom:16px;}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.feature-list li{display:flex;align-items:center;gap:8px;font-size:.79rem;color:var(--t2);font-weight:600;}
+.feature-list li i{color:var(--G2);font-size:.75rem;width:13px;}
+.how-step{display:flex;gap:20px;margin-bottom:24px;}
+.how-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--G1),var(--G2));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 4px 14px rgba(30,107,16,.3);}
+.how-line{flex:1;border-left:2px dashed rgba(45,143,28,.2);margin-left:22px;margin-top:-16px;padding-top:20px;padding-bottom:8px;padding-left:24px;}
+.plan-card{background:var(--card);border:1.5px solid var(--cardb);border-radius:var(--rxxl);padding:28px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sh);transition:all .3s;}
+.plan-card.featured{border-color:rgba(45,143,28,.4);background:linear-gradient(135deg,rgba(235,255,218,.9),rgba(255,250,200,.9));box-shadow:0 8px 30px rgba(45,143,28,.18);}
+.plan-card:hover{transform:translateY(-3px);box-shadow:var(--shm);}
+.plan-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;font-size:.62rem;font-weight:800;padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.06em;}
+.plan-price{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:700;color:var(--G1);margin:10px 0 4px;}
+.plan-sub{font-size:.75rem;color:var(--t5);margin-bottom:18px;}
+.plan-feat{font-size:.79rem;color:var(--t2);display:flex;align-items:center;gap:7px;margin-bottom:8px;text-align:left;}
+.plan-feat i{color:var(--G2);font-size:.75rem;flex-shrink:0;}
+@media(max-width:900px){.big-service{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="pw">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+
+    <!-- HERO -->
+    <div class="services-hero an">
+      <div class="services-hero-bg"></div><div class="services-hero-ov"></div>
+      <div class="services-hero-content" style="text-align:center;max-width:680px;margin:0 auto;">
+        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:700;color:rgba(200,255,160,.8);letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px;"><i class="fas fa-cog" style="font-size:.65rem;"></i> Our Services</div>
+        <div style="font-family:'Fraunces',serif;font-size:2.5rem;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.22;">AI-Powered Farming Tools, Free for Every Farmer</div>
+        <p style="color:rgba(210,255,170,.6);font-size:.9rem;line-height:1.75;margin-bottom:24px;">AgriSmart brings cutting-edge agricultural AI to your fingertips — no technical knowledge required. Our tools are designed for the Indian farmer.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="/register" class="btn btn-crop"><i class="fas fa-seedling"></i> Get Started Free</a>
+          <a href="/log_in" class="btn btn-glass"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORE AI SERVICES -->
+    <div class="ph an"><div class="ph-row"><div class="ph-ico fi-g"><i class="fas fa-robot"></i></div><div><div class="ptitle">AI-Powered Tools</div><div class="psub">Machine learning models built specifically for Indian agriculture</div></div></div></div>
+    <div class="big-service an a2">
+      <div class="bscard">
+        <div class="bscard-ico fi-g"><i class="fas fa-seedling"></i></div>
+        <div class="bscard-title">Crop Prediction</div>
+        <div class="bscard-desc">Enter your soil's NPK values, pH, temperature, humidity, and rainfall — our Random Forest model trained on 2,200+ Indian farm records will recommend the most suitable crop for your specific conditions.</div>
+        <ul class="feature-list">
+          <li><i class="fas fa-check"></i> 22 crop varieties supported</li>
+          <li><i class="fas fa-check"></i> 95%+ prediction accuracy</li>
+          <li><i class="fas fa-check"></i> Downloadable PDF report</li>
+          <li><i class="fas fa-check"></i> Season-aware recommendations</li>
+        </ul>
+        <a href="/crop_prediction" class="btn btn-crop" style="margin-top:18px;"><i class="fas fa-seedling"></i> Try Crop Prediction</a>
+      </div>
+
+      <div class="bscard">
+        <div class="bscard-ico fi-s"><i class="fas fa-leaf"></i></div>
+        <div class="bscard-title">Disease Detection</div>
+        <div class="bscard-desc">Upload a photo of your crop leaf and our VGG19 deep learning model will identify the disease within seconds. Get instant treatment suggestions and fertilizer recommendations to save your crop before it's too late.</div>
+        <ul class="feature-list">
+          <li><i class="fas fa-check"></i> 38 disease classes detected</li>
+          <li><i class="fas fa-check"></i> Works with 14 crop types</li>
+          <li><i class="fas fa-check"></i> Prevention & treatment guide</li>
+          <li><i class="fas fa-check"></i> Fertilizer recommendation included</li>
+        </ul>
+        <a href="/crop_dis" class="btn btn-out" style="margin-top:18px;"><i class="fas fa-camera"></i> Try Disease Detection</a>
+      </div>
+
+      <div class="bscard">
+        <div class="bscard-ico fi-w"><i class="fas fa-flask"></i></div>
+        <div class="bscard-title">Fertilizer Advisor</div>
+        <div class="bscard-desc">Provide your soil nutrient ratios and environmental conditions to receive a personalized fertilizer recommendation. Avoid over-fertilization, reduce costs, and improve your soil health season after season.</div>
+        <ul class="feature-list">
+          <li><i class="fas fa-check"></i> 7 fertilizer types covered</li>
+          <li><i class="fas fa-check"></i> Considers temperature & humidity</li>
+          <li><i class="fas fa-check"></i> Soil moisture analysis</li>
+          <li><i class="fas fa-check"></i> Downloadable report</li>
+        </ul>
+        <a href="/fert_rec" class="btn btn-wheat" style="margin-top:18px;"><i class="fas fa-flask"></i> Try Fertilizer Advisor</a>
+      </div>
+
+      <div class="bscard">
+        <div class="bscard-ico fi-o"><i class="fas fa-store"></i></div>
+        <div class="bscard-title">E-Marketplace</div>
+        <div class="bscard-desc">List your harvest directly on the AgriSmart marketplace and connect with verified buyers and vendors across India. No commissions, no middlemen — just fair prices and direct transactions for farmers.</div>
+        <ul class="feature-list">
+          <li><i class="fas fa-check"></i> Zero commission listing</li>
+          <li><i class="fas fa-check"></i> 2,400+ verified vendors</li>
+          <li><i class="fas fa-check"></i> Live market price integration</li>
+          <li><i class="fas fa-check"></i> Bulk & retail selling</li>
+        </ul>
+        <a href="/e_market" class="btn btn-glass" style="margin-top:18px;"><i class="fas fa-store"></i> Visit Marketplace</a>
+      </div>
+    </div>
+
+    <!-- SUPPORT SERVICES -->
+    <div class="ph an a3"><div class="ph-row"><div class="ph-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-hands-helping"></i></div><div><div class="ptitle">Support Services</div><div class="psub">Financial and informational resources to empower your farm</div></div></div></div>
+    <div class="fgrid an a3" style="margin-bottom:36px;">
+      <a href="/news" class="fcard"><div class="fcard-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-newspaper"></i></div><div class="fcard-tit">Agriculture News</div><div class="fcard-dsc">Real-time agricultural news, government scheme updates, MSP announcements, and weather alerts — all in one place.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/loan1" class="fcard"><div class="fcard-ico fi-w"><i class="fas fa-hand-holding-usd"></i></div><div class="fcard-tit">Loan Schemes</div><div class="fcard-dsc">Explore PM-Kisan Credit Card, NABARD interest subvention, MUDRA Yojana, and Agriculture Infrastructure Fund.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/insurance" class="fcard"><div class="fcard-ico fi-s"><i class="fas fa-shield-alt"></i></div><div class="fcard-tit">Crop Insurance</div><div class="fcard-dsc">Understand PMFBY, WBCIS, Coconut Palm Insurance, and UPIS schemes to protect your crop investment.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="fcard"><div class="fcard-ico fi-g"><i class="fas fa-chart-line"></i></div><div class="fcard-tit">Live Market Prices</div><div class="fcard-dsc">Real-time mandi prices from Agmarknet — check commodity prices before selling to get the best deal.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:36px;" class="an a4">
+      <div>
+        <div class="ph" style="margin-bottom:20px;"><div class="ph-row"><div class="ph-ico fi-g"><i class="fas fa-route"></i></div><div><div class="ptitle">How It Works</div><div class="psub">Start using AgriSmart in 3 simple steps</div></div></div></div>
+        <div class="how-step">
+          <div><div class="how-num">1</div></div>
+          <div><div style="font-weight:700;font-size:.92rem;color:var(--t1);margin-bottom:4px;">Create Your Free Account</div><div style="font-size:.8rem;color:var(--t3);line-height:1.6;">Register as a farmer using your name, mobile number, and email. No fees, no credit card required.</div></div>
+        </div>
+        <div class="how-step">
+          <div><div class="how-num">2</div></div>
+          <div><div style="font-weight:700;font-size:.92rem;color:var(--t1);margin-bottom:4px;">Enter Your Field Data</div><div style="font-size:.8rem;color:var(--t3);line-height:1.6;">Input your soil test results, climate data, or upload a leaf photo. Our AI processes your information instantly.</div></div>
+        </div>
+        <div class="how-step">
+          <div><div class="how-num">3</div></div>
+          <div><div style="font-weight:700;font-size:.92rem;color:var(--t1);margin-bottom:4px;">Get AI Recommendations</div><div style="font-size:.8rem;color:var(--t3);line-height:1.6;">Receive detailed recommendations, download your report, and apply the advice to your farm for better yields.</div></div>
+        </div>
+      </div>
+
+      <!-- PRICING -->
+      <div>
+        <div class="ph" style="margin-bottom:20px;"><div class="ph-row"><div class="ph-ico fi-w"><i class="fas fa-tag"></i></div><div><div class="ptitle">Pricing Plans</div><div class="psub">All core features are completely free</div></div></div></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="plan-card featured">
+            <div class="plan-badge">Most Popular</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--t1);">Farmer Plan</div>
+            <div class="plan-price">₹0</div>
+            <div class="plan-sub">Forever free for registered farmers</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Unlimited crop predictions</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Disease detection (10/day)</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Fertilizer recommendations</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Marketplace access</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> News & scheme updates</div>
+            <a href="/register" class="btn btn-crop bw" style="margin-top:16px;"><i class="fas fa-seedling"></i> Get Started Free</a>
+          </div>
+          <div class="plan-card">
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--t1);">Vendor Plan</div>
+            <div class="plan-price" style="font-size:1.8rem;">₹499<span style="font-size:1rem;">/yr</span></div>
+            <div class="plan-sub">For agricultural businesses & vendors</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> All farmer plan features</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Bulk listing management</div>
+            <div class="plan-feat"><i class="fas fa-check-circle"></i> Priority support</div>
+            <a href="/vendor_log_in" class="btn btn-wheat bw" style="margin-top:16px;"><i class="fas fa-store"></i> Vendor Registration</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

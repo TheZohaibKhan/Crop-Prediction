@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block extra_head %}
+<style>
+.wb{border-radius:var(--rxxl);overflow:hidden;position:relative;margin-bottom:28px;padding:36px 40px;}
+.wb-bg{position:absolute;inset:0;background:url('/static/images/tractor_field.jpg') center 55%/cover no-repeat;filter:brightness(.3) saturate(1.2);}
+.wb-ov{position:absolute;inset:0;background:linear-gradient(120deg,rgba(4,18,1,.88) 0%,rgba(14,48,5,.52) 50%,rgba(3,14,1,.84) 100%);}
+.wb-shine{position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);animation:shine 7s ease-in-out infinite;}
+@keyframes shine{0%,100%{left:-120%;}50%{left:130%;}}
+.wb-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;}
+.wb-left h2{font-family:'Fraunces',serif;font-size:1.65rem;font-weight:700;color:#fff;margin-bottom:5px;}
+.wb-left p{color:rgba(210,255,180,.72);font-size:.87rem;}
+.wb-right{display:flex;gap:14px;flex-wrap:wrap;}
+.wb-stat{background:rgba(255,253,225,.12);backdrop-filter:blur(14px);border:1px solid rgba(200,160,20,.22);border-radius:var(--rl);padding:14px 20px;text-align:center;}
+.wb-num{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:#f5cc5a;line-height:1;}
+.wb-lbl{font-size:.65rem;color:rgba(255,255,180,.65);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.wb-emoji{font-size:3.2rem;animation:flt 5s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.srow{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:28px;}
+@media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr);}}
+
+.avatar-wrap{position:relative;width:72px;height:72px;margin:0 auto 11px;cursor:pointer;}
+.avatar-wrap .av-initials{
+  width:72px;height:72px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--S1),var(--S2));
+  box-shadow:0 4px 14px rgba(107,46,8,.28),0 0 0 3px rgba(212,150,14,.2);
+}
+.avatar-wrap .av-photo{
+  width:72px;height:72px;border-radius:50%;object-fit:cover;
+  border:3px solid rgba(212,150,14,.35);
+  box-shadow:0 4px 14px rgba(107,46,8,.28);
+  display:none;
+}
+.avatar-cam{
+  position:absolute;bottom:1px;right:1px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--G2);border:2px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.55rem;color:#fff;z-index:2;
+  transition:all .2s;
+}
+.avatar-wrap:hover .avatar-cam{background:var(--G1);transform:scale(1.12);}
+</style>
+{% endblock %}
+{% block body %}
+{% if user.is_authenticated %}
+<div class="app">
+  <!-- *** FIXED SIDEBAR – scrolls independently *** -->
+  <aside class="sb" style="max-height: calc(100vh - 100px); overflow-y: auto; padding-bottom: 60px;">
+    <img src="/static/images/rice_paddy.jpg" alt="" class="sb-img" style="height:110px;">
+    <div class="sbu">
+      <div class="avatar-wrap" onclick="document.getElementById('av-input').click()" title="Click to upload photo">
+        <div class="av-initials" id="av-initials">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+        <img class="av-photo" id="av-photo" src="" alt="Profile Photo">
+        <div class="avatar-cam"><i class="fas fa-camera"></i></div>
+        <input type="file" id="av-input" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+      </div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink act"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market &amp; Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Account</div>
+      <a href="/edit_profile" class="slink"><i class="fas fa-user-edit"></i> Edit Profile</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <!-- WELCOME BANNER -->
+    <div class="wb an">
+      <div class="wb-bg"></div><div class="wb-ov"></div><div class="wb-shine"></div>
+      <div class="wb-content">
+        <div class="wb-left">
+          <h2>Good day, {{ first_name }}! 👋</h2>
+          <p>Your AI farm assistant is ready. What would you like to do today?</p>
+        </div>
+        <div class="wb-right">
+          <div class="wb-stat"><div class="wb-num">22+</div><div class="wb-lbl">Crops</div></div>
+          <div class="wb-stat"><div class="wb-num">95%</div><div class="wb-lbl">Accuracy</div></div>
+          <div class="wb-stat"><div class="wb-num">Free</div><div class="wb-lbl">Always</div></div>
+        </div>
+        <div class="wb-emoji">🌾</div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="srow an a2">
+      <div class="stcard"><div class="stico fi-g"><i class="fas fa-seedling"></i></div><div><div class="stv">22+</div><div class="stlb">Crops Supported</div></div></div>
+      <div class="stcard"><div class="stico fi-s"><i class="fas fa-leaf"></i></div><div><div class="stv">38</div><div class="stlb">Disease Classes</div></div></div>
+      <div class="stcard"><div class="stico fi-w"><i class="fas fa-flask"></i></div><div><div class="stv">7</div><div class="stlb">Fertilizer Types</div></div></div>
+      <div class="stcard"><div class="stico fi-g"><i class="fas fa-percentage"></i></div><div><div class="stv">95%</div><div class="stlb">ML Accuracy</div></div></div>
+    </div>
+
+    <!-- AI TOOLS -->
+    <div class="ph an a3"><div class="ph-row"><div class="ph-ico fi-g"><i class="fas fa-robot"></i></div><div><div class="ptitle">AI Tools</div><div class="psub">Machine learning models trained on Indian agricultural datasets</div></div></div></div>
+    <div class="fgrid an a3">
+      <a href="/crop_prediction" class="fcard"><div class="fcard-ico fi-g"><i class="fas fa-seedling"></i></div><div class="fcard-tit">Crop Prediction</div><div class="fcard-dsc">Enter N, P, K, pH, temperature, humidity and rainfall to get the most suitable crop recommendation.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/crop_dis" class="fcard"><div class="fcard-ico fi-s"><i class="fas fa-leaf"></i></div><div class="fcard-tit">Disease Detection</div><div class="fcard-dsc">Upload a leaf image — our VGG19 model identifies the disease and suggests treatment instantly.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/fert_rec" class="fcard"><div class="fcard-ico fi-w"><i class="fas fa-flask"></i></div><div class="fcard-tit">Fertilizer Advisor</div><div class="fcard-dsc">Get smart fertilizer recommendations based on your crop type and soil nutrient levels.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/e_market" class="fcard"><div class="fcard-ico fi-o"><i class="fas fa-store"></i></div><div class="fcard-tit">E-Marketplace</div><div class="fcard-dsc">Buy and sell agricultural products directly with verified vendors — no middlemen, fair prices.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/news" class="fcard"><div class="fcard-ico fi-b"><i class="fas fa-newspaper"></i></div><div class="fcard-tit">Agriculture News</div><div class="fcard-dsc">Stay updated with farming news, government schemes, weather alerts and market trends.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+      <a href="/loan1" class="fcard"><div class="fcard-ico fi-w"><i class="fas fa-hand-holding-usd"></i></div><div class="fcard-tit">Loans &amp; Insurance</div><div class="fcard-dsc">Explore PM-KISAN, Kisan Credit Card, PMFBY crop insurance and government schemes.</div><div class="fcard-arr"><i class="fas fa-arrow-right"></i></div></a>
+    </div>
+
+    <!-- VENDOR INQUIRIES SECTION -->
+    {% if inquiries %}
+    <div class="ph an a4" style="margin-top:28px;">
+      <div class="ph-row">
+        <div class="ph-ico fi-w"><i class="fas fa-envelope"></i></div>
+        <div>
+          <div class="ptitle">Vendor Inquiries</div>
+          <div class="psub">Messages from buyers interested in your listings. You can reply directly below.</div>
+        </div>
+      </div>
+    </div>
+    <div class="an a4" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+      {% for inquiry in inquiries %}
+      <div class="gc">
+        <div class="gcb" style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="flex-shrink:0;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--W1),var(--W2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-family:'Fraunces',serif;font-weight:700;">
+            {{ inquiry.vendor.first_name|first|upper }}{{ inquiry.vendor.last_name|first|upper }}
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="font-weight:700;color:var(--t1);font-size:.9rem;margin-bottom:2px;">
+                {{ inquiry.vendor.first_name }} {{ inquiry.vendor.last_name }}
+                <span style="font-weight:500;color:var(--t4);font-size:.78rem;">&nbsp;· {{ inquiry.created_at|date:"d M Y, h:i A" }}</span>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button onclick="toggleReplyForm(this)" style="padding:4px 10px;border-radius:99px;background:rgba(30,107,16,.08);border:1px solid rgba(30,107,16,.2);color:var(--G1);font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:all .2s;"><i class="fas fa-reply"></i> Reply</button>
+                <form method="POST" action="{% url 'delete_inquiry' inquiry.id %}" style="margin:0;">
+                  {% csrf_token %}
+                  <button type="submit" style="padding:4px 10px;border-radius:99px;background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.2);color:#c04040;font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:all .2s;" onclick="return confirm('Delete this inquiry?');"><i class="fas fa-trash"></i> Delete</button>
+                </form>
+              </div>
+            </div>
+            {% if inquiry.listing %}
+            <div style="font-size:.82rem;color:var(--t3);margin-bottom:6px;">
+              Crop: <strong>{{ inquiry.listing.crop_type }}</strong> · Qty: {{ inquiry.listing.quantity }} KG · Price: ₹{{ inquiry.listing.price }}/kg
+            </div>
+            {% endif %}
+            <div style="font-size:.82rem;color:var(--t2);background:rgba(255,248,205,.65);border-radius:10px;padding:10px;line-height:1.5;border:1px solid rgba(180,130,10,.12);">
+              <i class="fas fa-quote-left" style="color:var(--W2);opacity:.6;margin-right:4px;"></i>
+              {{ inquiry.message|linebreaksbr }}
+            </div>
+            <div style="margin-top:6px;font-size:.72rem;color:var(--t5);">
+              <i class="fas fa-envelope" style="margin-right:3px;"></i>{{ inquiry.vendor.email }}
+            </div>
+
+            <!-- Inline reply form (hidden by default) -->
+            <div class="reply-form" style="display:none; margin-top:10px;">
+              <form method="POST" action="{% url 'reply_inquiry' inquiry.id %}">
+                {% csrf_token %}
+                <textarea name="reply" rows="3" style="width:100%;border:1.5px solid var(--G2);border-radius:var(--r);padding:8px 10px;font-family:inherit;font-size:.82rem;color:var(--t1);background:rgba(255,252,228,.7);resize:vertical;outline:none;" placeholder="Type your reply..."></textarea>
+                <div style="display:flex;gap:6px;margin-top:6px;">
+                  <button type="submit" style="padding:6px 14px;border-radius:99px;background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;border:none;font-weight:700;font-size:.76rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;"><i class="fas fa-paper-plane"></i> Send</button>
+                  <button type="button" onclick="this.closest('.reply-form').style.display='none'" style="padding:6px 14px;border-radius:99px;background:rgba(0,0,0,.05);border:1.5px solid rgba(180,130,10,.2);color:var(--t5);font-weight:700;font-size:.76rem;cursor:pointer;font-family:inherit;">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </main>
+</div>
+{% endif %}
+
+<script>
+function uploadAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var src = e.target.result;
+    var photo    = document.getElementById('av-photo');
+    var initials = document.getElementById('av-initials');
+    photo.src = src;
+    photo.style.display = 'block';
+    initials.style.display = 'none';
+    try { localStorage.setItem('agri_avatar', src); } catch(err) {}
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  try {
+    var saved = localStorage.getItem('agri_avatar');
+    if (saved) {
+      var photo    = document.getElementById('av-photo');
+      var initials = document.getElementById('av-initials');
+      if (photo && initials) {
+        photo.src = saved;
+        photo.style.display = 'block';
+        initials.style.display = 'none';
+      }
+    }
+  } catch(err) {}
+});
+
+function toggleReplyForm(button) {
+  var replyForm = button.closest('.gc').querySelector('.reply-form');
+  if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+    replyForm.style.display = 'block';
+  } else {
+    replyForm.style.display = 'none';
+  }
+}
+</script>
+{% endblock %}

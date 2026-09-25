@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}Agricultural Blog{% endblock %}
+{% block extra_head %}
+<style>
+.blog-hero{border-radius:var(--rxxl);overflow:hidden;position:relative;margin-bottom:32px;padding:52px 48px;}
+.blog-hero-bg{position:absolute;inset:0;background:url('/static/images/seedling_sunset.jpg') center 40%/cover no-repeat;filter:brightness(.25) saturate(1.2);}
+.blog-hero-ov{position:absolute;inset:0;background:linear-gradient(140deg,rgba(4,20,1,.92) 0%,rgba(14,55,5,.65) 55%,rgba(3,15,1,.88) 100%);}
+.blog-hero-content{position:relative;z-index:1;}
+.post-card{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);box-shadow:var(--sh);overflow:hidden;transition:all .32s cubic-bezier(.34,1.2,.64,1);}
+.post-card:hover{transform:translateY(-5px);box-shadow:var(--shx);border-color:rgba(180,130,10,.3);}
+.post-img{width:100%;height:185px;object-fit:cover;display:block;filter:brightness(.85) saturate(1.1);}
+.post-body{padding:20px;}
+.post-cat{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:.63rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.cat-g{background:rgba(45,143,28,.1);color:var(--G1);border:1px solid rgba(45,143,28,.2);}
+.cat-w{background:rgba(212,150,14,.12);color:var(--W1);border:1px solid rgba(212,150,14,.22);}
+.cat-b{background:rgba(56,133,200,.1);color:#3885c8;border:1px solid rgba(56,133,200,.2);}
+.cat-s{background:rgba(155,69,21,.1);color:var(--S2);border:1px solid rgba(155,69,21,.2);}
+.post-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:7px;line-height:1.42;}
+.post-excerpt{font-size:.79rem;color:var(--t3);line-height:1.65;margin-bottom:13px;}
+.post-meta{display:flex;align-items:center;justify-content:space-between;font-size:.7rem;color:var(--t5);}
+.post-meta-left{display:flex;align-items:center;gap:5px;font-weight:600;}
+.post-read{color:var(--G1);font-weight:700;font-size:.74rem;display:flex;align-items:center;gap:4px;text-decoration:none;transition:gap .2s;}
+.post-read:hover{gap:8px;}
+.featured-post{grid-column:span 2;display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:var(--rxxl);overflow:hidden;box-shadow:var(--shm);border:1px solid var(--cardb);}
+.featured-img-wrap{position:relative;overflow:hidden;}
+.featured-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.78) saturate(1.1);transition:transform .5s;}
+.featured-post:hover .featured-img-wrap img{transform:scale(1.04);}
+.featured-img-overlay{position:absolute;inset:0;background:linear-gradient(90deg,transparent 50%,var(--cream) 100%);}
+.featured-body{background:var(--card);padding:32px;}
+@media(max-width:900px){.featured-post{grid-column:span 1;grid-template-columns:1fr;}.featured-img-wrap{height:200px;}}
+.sidebar-widget{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);padding:20px;box-shadow:var(--sh);margin-bottom:18px;}
+.sidebar-widget h4{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(180,130,10,.12);}
+.tag-pill{display:inline-flex;padding:5px 12px;border-radius:99px;font-size:.72rem;font-weight:600;background:rgba(255,248,205,.7);border:1px solid rgba(180,130,10,.18);color:var(--t2);margin:3px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.tag-pill:hover{background:rgba(45,143,28,.1);color:var(--G1);border-color:rgba(45,143,28,.2);}
+</style>
+{% endblock %}
+{% block body %}
+<div class="pw" style="padding-top:100px;">
+  <!-- HERO -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+    <div class="blog-hero an">
+      <div class="blog-hero-bg"></div><div class="blog-hero-ov"></div>
+      <div class="blog-hero-content">
+        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:700;color:rgba(200,255,160,.8);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;"><i class="fas fa-newspaper" style="font-size:.65rem;"></i> AgriSmart Blog</div>
+        <div style="font-family:'Fraunces',serif;font-size:2.4rem;font-weight:700;color:#fff;margin-bottom:10px;max-width:560px;line-height:1.25;">Farming Knowledge for the Modern Indian Farmer</div>
+        <p style="color:rgba(210,255,170,.62);font-size:.9rem;max-width:480px;line-height:1.7;">Expert articles on crop management, soil health, government schemes, and agri-technology — written by farmers, for farmers.</p>
+        <div style="display:flex;gap:26px;margin-top:20px;">
+          <div><div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:#f5cc5a;">120+</div><div style="font-size:.65rem;color:rgba(200,230,160,.55);text-transform:uppercase;letter-spacing:.06em;font-weight:700;">Articles</div></div>
+          <div><div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:#f5cc5a;">18</div><div style="font-size:.65rem;color:rgba(200,230,160,.55);text-transform:uppercase;letter-spacing:.06em;font-weight:700;">Categories</div></div>
+          <div><div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:#f5cc5a;">Weekly</div><div style="font-size:.65rem;color:rgba(200,230,160,.55);text-transform:uppercase;letter-spacing:.06em;font-weight:700;">Updates</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start;">
+      <div>
+        <!-- FEATURED POST -->
+        <div style="font-size:.66rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-star" style="color:var(--W2);margin-right:6px;"></i>Featured Article</div>
+        <div class="featured-post an a1" style="margin-bottom:24px;">
+          <div class="featured-img-wrap">
+            <img src="/static/images/farmer_inspect.jpg" alt="Soil Health">
+            <div class="featured-img-overlay"></div>
+          </div>
+          <div class="featured-body">
+            <div class="post-cat cat-g"><i class="fas fa-leaf"></i> Soil Science</div>
+            <div class="post-title" style="font-size:1.25rem;margin-bottom:12px;">Understanding Soil NPK Ratios: A Complete Guide for Indian Farmers</div>
+            <div class="post-excerpt">Nitrogen, Phosphorous, and Potassium are the three pillars of soil fertility. Getting these ratios right can dramatically improve your yield. This comprehensive guide explains what each nutrient does, how to test your soil, and what amendments to apply based on your specific crop requirements...</div>
+            <div class="post-meta" style="margin-top:16px;">
+              <div class="post-meta-left"><i class="fas fa-user-circle" style="color:var(--G2);font-size:.9rem;"></i> AgriSmart Team · May 2026</div>
+              <a href="#" class="post-read">Read Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARTICLE GRID -->
+        <div style="font-size:.66rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-th-large" style="color:var(--W2);margin-right:6px;"></i>Latest Articles</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+          <div class="post-card an a2">
+            <img src="/static/images/rice_paddy.jpg" alt="" class="post-img">
+            <div class="post-body">
+              <div class="post-cat cat-g"><i class="fas fa-seedling"></i> Crop Management</div>
+              <div class="post-title">Kharif 2026: Best Crops to Sow This Monsoon Season</div>
+              <div class="post-excerpt">With the monsoon arriving early, farmers across Maharashtra and MP should consider these high-yield varieties for maximum returns.</div>
+              <div class="post-meta"><div class="post-meta-left"><i class="fas fa-clock"></i> 6 min read</div><a href="#" class="post-read">Read <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+          </div>
+
+          <div class="post-card an a2">
+            <img src="/static/images/farmer_harvest.jpg" alt="" class="post-img">
+            <div class="post-body">
+              <div class="post-cat cat-w"><i class="fas fa-rupee-sign"></i> Government Schemes</div>
+              <div class="post-title">PM-KISAN 2026: How to Check Your Beneficiary Status Online</div>
+              <div class="post-excerpt">Step-by-step guide to checking your PM-KISAN payment status, correcting errors in your application, and understanding eligibility criteria.</div>
+              <div class="post-meta"><div class="post-meta-left"><i class="fas fa-clock"></i> 4 min read</div><a href="#" class="post-read">Read <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+          </div>
+
+          <div class="post-card an a3">
+            <img src="/static/images/crop_rows.jpg" alt="" class="post-img">
+            <div class="post-body">
+              <div class="post-cat cat-b"><i class="fas fa-robot"></i> AgriTech</div>
+              <div class="post-title">How AI Is Transforming Crop Disease Detection in India</div>
+              <div class="post-excerpt">Machine learning models trained on millions of plant images can now identify 38 different crop diseases with over 95% accuracy — and it's free.</div>
+              <div class="post-meta"><div class="post-meta-left"><i class="fas fa-clock"></i> 8 min read</div><a href="#" class="post-read">Read <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+          </div>
+
+          <div class="post-card an a3">
+            <img src="/static/images/tractor_field.jpg" alt="" class="post-img" style="filter:brightness(.7) saturate(1.1);">
+            <div class="post-body">
+              <div class="post-cat cat-s"><i class="fas fa-tractor"></i> Farm Machinery</div>
+              <div class="post-title">Renting vs. Owning Farm Equipment: What Makes Financial Sense?</div>
+              <div class="post-excerpt">With tractor prices soaring, small and marginal farmers face a tough choice. We break down the costs, benefits, and smart alternatives.</div>
+              <div class="post-meta"><div class="post-meta-left"><i class="fas fa-clock"></i> 5 min read</div><a href="#" class="post-read">Read <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="text-align:center;margin-top:24px;" class="an a5">
+          <a href="#" class="btn btn-out"><i class="fas fa-th-list"></i> Load More Articles</a>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="an a2" style="position:sticky;top:110px;">
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-search" style="color:var(--W2);margin-right:7px;"></i>Search Blog</h4>
+          <div style="position:relative;">
+            <input type="text" class="fc" placeholder="Search articles..." style="padding-right:40px;">
+            <i class="fas fa-search" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--t5);font-size:.82rem;"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-folder" style="color:var(--W2);margin-right:7px;"></i>Categories</h4>
+          {% for item in categories %}
+          <a href="#" style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(180,130,10,.08);text-decoration:none;transition:all .2s;" onmouseover="this.querySelector('span').style.color='var(--G1)'" onmouseout="this.querySelector('span').style.color='var(--t2)'">
+            <span style="font-size:.82rem;font-weight:600;color:var(--t2);">{{ forloop.counter }}. {{ item.name }}</span>
+            <span style="font-size:.7rem;font-weight:700;color:var(--t5);background:rgba(255,248,205,.7);padding:2px 8px;border-radius:99px;">{{ item.count }}</span>
+          </a>
+          {% endfor %}
+        </div>
+
+        <div class="sidebar-widget">
+          <h4><i class="fas fa-tags" style="color:var(--W2);margin-right:7px;"></i>Popular Tags</h4>
+          <div>
+            {% for tag in tags %}
+            <a href="#" class="tag-pill">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="sidebar-widget" style="background:linear-gradient(135deg,rgba(30,107,16,.08),rgba(45,143,28,.04));border-color:rgba(45,143,28,.2);">
+          <h4><i class="fas fa-bell" style="color:var(--G2);margin-right:7px;"></i>Newsletter</h4>
+          <p style="font-size:.78rem;color:var(--t3);margin-bottom:13px;line-height:1.6;">Get weekly farming tips and government updates straight to your inbox.</p>
+          <input type="email" class="fc" placeholder="Your email address" style="margin-bottom:9px;">
+          <button class="btn btn-crop bw" style="padding:10px;"><i class="fas fa-paper-plane"></i> Subscribe Free</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

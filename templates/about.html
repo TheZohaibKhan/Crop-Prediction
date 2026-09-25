@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block title %}About AgriSmart{% endblock %}
+{% block extra_head %}
+<style>
+.about-hero{border-radius:var(--rxxl);overflow:hidden;position:relative;padding:60px 48px;margin-bottom:32px;}
+.about-hero-bg{position:absolute;inset:0;background:url('/static/images/farmer_field.jpg') center 40%/cover no-repeat;filter:brightness(.22) saturate(1.3);}
+.about-hero-ov{position:absolute;inset:0;background:linear-gradient(130deg,rgba(4,20,1,.93) 0%,rgba(18,55,5,.62) 55%,rgba(3,15,1,.9) 100%);}
+.about-hero-content{position:relative;z-index:1;}
+.stat-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px 28px;text-align:center;transition:all .25s;}
+.stat-box:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);}
+.stat-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:#f5cc5a;line-height:1;}
+.stat-lbl{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(200,230,160,.55);margin-top:6px;}
+.mission-card{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);padding:28px;box-shadow:var(--sh);display:flex;gap:18px;align-items:flex-start;transition:all .3s;}
+.mission-card:hover{transform:translateY(-4px);box-shadow:var(--shx);border-color:rgba(180,130,10,.3);}
+.mission-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.mission-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.mission-desc{font-size:.82rem;color:var(--t3);line-height:1.7;}
+.team-card{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);padding:28px;box-shadow:var(--sh);text-align:center;transition:all .3s;}
+.team-card:hover{transform:translateY(-5px);box-shadow:var(--shx);border-color:rgba(45,143,28,.25);}
+.team-avatar{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px;background:linear-gradient(135deg,rgba(45,143,28,.15),rgba(30,107,16,.08));border:2px solid rgba(45,143,28,.2);}
+.team-name{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.team-role{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--G2);margin-bottom:10px;}
+.team-desc{font-size:.78rem;color:var(--t4);line-height:1.65;}
+.timeline-item{display:flex;gap:20px;padding-bottom:28px;position:relative;}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:19px;top:42px;bottom:0;width:2px;background:linear-gradient(to bottom,rgba(45,143,28,.3),rgba(45,143,28,.05));}
+.timeline-dot{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--G2),var(--G3));display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(45,143,28,.25);}
+.timeline-year{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--G2);margin-bottom:4px;}
+.timeline-title{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:5px;}
+.timeline-text{font-size:.8rem;color:var(--t3);line-height:1.65;}
+.tech-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:99px;font-size:.78rem;font-weight:600;background:rgba(255,248,205,.6);border:1px solid rgba(180,130,10,.18);color:var(--t2);margin:4px;}
+@media(max-width:900px){.about-hero{padding:36px 24px;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="pw" style="padding-top:100px;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+
+    <!-- HERO -->
+    <div class="about-hero an">
+      <div class="about-hero-bg"></div><div class="about-hero-ov"></div>
+      <div class="about-hero-content">
+        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:700;color:rgba(200,255,160,.8);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;">
+          <i class="fas fa-leaf" style="font-size:.65rem;"></i> Our Story
+        </div>
+        <div style="font-family:'Fraunces',serif;font-size:2.4rem;font-weight:700;color:#fff;margin-bottom:10px;max-width:580px;line-height:1.25;">
+          Empowering Indian Farmers with Smart Agricultural Technology
+        </div>
+        <p style="color:rgba(210,255,170,.62);font-size:.9rem;max-width:500px;line-height:1.75;">
+          AgriSmart was born from a simple belief: every Indian farmer deserves access to the same cutting-edge tools that large agribusinesses use. We bridge the gap between modern AI and the fields of Bharat.
+        </p>
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;max-width:600px;">
+          {% for stat in stats %}
+          <div class="stat-box">
+            <div class="stat-val">{{ stat.value }}</div>
+            <div class="stat-lbl">{{ stat.label }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSION / VALUES -->
+    <div class="ph an a1"><div class="ph-row"><div class="ph-ico fi-g"><i class="fas fa-bullseye"></i></div><div><div class="ptitle">Our Mission & Values</div><div class="psub">What drives us every single day</div></div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:36px;" class="an a2">
+      <div class="mission-card">
+        <div class="mission-ico fi-g"><i class="fas fa-seedling"></i></div>
+        <div>
+          <div class="mission-title">Farmer-First Technology</div>
+          <div class="mission-desc">Every feature we build starts with one question: does this genuinely help a farmer in Vidarbha, Bundelkhand, or the Punjab plains? We never build for complexity — we build for impact.</div>
+        </div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-ico fi-w"><i class="fas fa-lock-open"></i></div>
+        <div>
+          <div class="mission-title">Free & Accessible for All</div>
+          <div class="mission-desc">Core tools — crop prediction, disease detection, fertilizer guidance, and market access — are permanently free. We believe financial barriers should never stand between a farmer and better yields.</div>
+        </div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-microscope"></i></div>
+        <div>
+          <div class="mission-title">Science-Backed Accuracy</div>
+          <div class="mission-desc">Our models are trained on thousands of real agricultural data points from Indian fields. We continuously retrain and validate against ground truth to maintain 95%+ accuracy.</div>
+        </div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-ico fi-s"><i class="fas fa-hands-helping"></i></div>
+        <div>
+          <div class="mission-title">Community & Collaboration</div>
+          <div class="mission-desc">We work alongside KVKs, state agriculture departments, and farmer producer organisations to make sure our tools reflect real on-ground conditions and not just lab assumptions.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="ph an a3"><div class="ph-row"><div class="ph-ico fi-w"><i class="fas fa-users"></i></div><div><div class="ptitle">Meet the Team</div><div class="psub">The people building AgriSmart for India's farmers</div></div></div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:36px;" class="an a4">
+      {% for member in team_members %}
+      <div class="team-card">
+        <div class="team-avatar"><i class="{{ member.icon }}" style="color:var(--G2);"></i></div>
+        <div class="team-name">{{ member.name }}</div>
+        <div class="team-role">{{ member.role }}</div>
+        <div class="team-desc">{{ member.desc }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- JOURNEY / TIMELINE -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:36px;align-items:start;" class="an a5">
+      <div>
+        <div class="ph" style="margin-bottom:20px;"><div class="ph-row"><div class="ph-ico fi-g"><i class="fas fa-route"></i></div><div><div class="ptitle">Our Journey</div><div class="psub">How AgriSmart grew from idea to impact</div></div></div></div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><i class="fas fa-lightbulb"></i></div>
+          <div>
+            <div class="timeline-year">2022 — The Idea</div>
+            <div class="timeline-title">Born in a College Hackathon</div>
+            <div class="timeline-text">A team of engineering students from Pune noticed that farmers nearby had no easy way to predict which crop to sow. AgriSmart started as a weekend project.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><i class="fas fa-flask"></i></div>
+          <div>
+            <div class="timeline-year">2023 — Research & Build</div>
+            <div class="timeline-title">First AI Models Trained</div>
+            <div class="timeline-text">We partnered with two KVKs in Maharashtra to collect real soil data. Our Naive Bayes crop predictor and Random Forest model were trained and validated in the field.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><i class="fas fa-rocket"></i></div>
+          <div>
+            <div class="timeline-year">2024 — Launch</div>
+            <div class="timeline-title">Public Platform Goes Live</div>
+            <div class="timeline-text">AgriSmart launched with crop prediction, disease detection using VGG19, fertilizer recommendations, and the farmer marketplace. 500+ farmers signed up in the first month.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <div class="timeline-year">2025–2026 — Growth</div>
+            <div class="timeline-title">10,000+ Farmers & Counting</div>
+            <div class="timeline-text">New features — news feed, loan guidance, insurance info, and vendor marketplace — rolled out. Serving farmers across Maharashtra, MP, UP, and Rajasthan.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECH STACK -->
+      <div>
+        <div class="ph" style="margin-bottom:20px;"><div class="ph-row"><div class="ph-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-cogs"></i></div><div><div class="ptitle">Technology Stack</div><div class="psub">Powered by proven, battle-tested tools</div></div></div></div>
+        <div class="gc"><div class="gcb">
+          <div style="margin-bottom:16px;">
+            <div style="font-size:.65rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;"><i class="fas fa-brain" style="color:var(--G2);margin-right:5px;"></i>AI & Machine Learning</div>
+            <span class="tech-pill"><i class="fas fa-leaf" style="color:var(--G2);"></i> TensorFlow / Keras</span>
+            <span class="tech-pill"><i class="fas fa-calculator" style="color:var(--W2);"></i> Scikit-learn</span>
+            <span class="tech-pill"><i class="fas fa-image" style="color:#3885c8;"></i> VGG19 CNN</span>
+            <span class="tech-pill"><i class="fas fa-tree" style="color:var(--G1);"></i> Random Forest</span>
+            <span class="tech-pill"><i class="fas fa-bahai" style="color:var(--S2);"></i> Naive Bayes</span>
+          </div>
+          <div style="margin-bottom:16px;">
+            <div style="font-size:.65rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;"><i class="fas fa-server" style="color:#3885c8;margin-right:5px;"></i>Backend</div>
+            <span class="tech-pill"><i class="fab fa-python" style="color:#3885c8;"></i> Python 3.12</span>
+            <span class="tech-pill"><i class="fas fa-globe" style="color:var(--G2);"></i> Django 6</span>
+            <span class="tech-pill"><i class="fas fa-database" style="color:var(--W2);"></i> SQLite / PostgreSQL</span>
+          </div>
+          <div style="margin-bottom:16px;">
+            <div style="font-size:.65rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;"><i class="fas fa-palette" style="color:var(--W2);margin-right:5px;"></i>Frontend</div>
+            <span class="tech-pill"><i class="fab fa-html5" style="color:#e44d26;"></i> HTML5 / CSS3</span>
+            <span class="tech-pill"><i class="fab fa-js" style="color:#f0db4f;"></i> Vanilla JavaScript</span>
+            <span class="tech-pill"><i class="fab fa-font-awesome" style="color:#528dd3;"></i> Font Awesome 6</span>
+          </div>
+          <div>
+            <div style="font-size:.65rem;font-weight:800;color:var(--t5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;"><i class="fas fa-cloud" style="color:var(--G2);margin-right:5px;"></i>Integrations</div>
+            <span class="tech-pill"><i class="fas fa-newspaper" style="color:var(--S2);"></i> NewsAPI</span>
+            <span class="tech-pill"><i class="fas fa-map-marker-alt" style="color:#e44d26;"></i> Google Maps</span>
+            <span class="tech-pill"><i class="fas fa-lock" style="color:var(--G2);"></i> Django Auth</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="gc an a6" style="margin-bottom:36px;background:linear-gradient(135deg,rgba(30,107,16,.08),rgba(45,143,28,.04));border-color:rgba(45,143,28,.2);">
+      <div class="gcb" style="text-align:center;padding:36px;">
+        <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:var(--t1);margin-bottom:8px;">Ready to farm smarter?</div>
+        <p style="color:var(--t3);font-size:.88rem;max-width:440px;margin:0 auto 22px;line-height:1.7;">Join thousands of Indian farmers already using AgriSmart to improve their yields, reduce losses, and access government schemes.</p>
+        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+          <a href="{% url 'register' %}" class="btn btn-crop bw"><i class="fas fa-user-plus"></i> Get Started Free</a>
+          <a href="{% url 'contact' %}" class="btn btn-out"><i class="fas fa-headset"></i> Contact Us</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

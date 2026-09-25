@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block body %}
+{% if user.is_authenticated %}
+<div class="app">
+  <aside class="sb">
+    <img src="/static/images/rice_paddy.jpg" alt="" class="sb-img" style="height:110px;">
+    <div class="sbu">
+      <div class="sbav">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
+      <div class="sbn">{{ user.first_name }} {{ user.last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/edit_profile" class="slink act"><i class="fas fa-user-edit"></i> Edit Profile</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-g"><i class="fas fa-user-edit"></i></div>
+        <div><div class="ptitle">Edit Profile</div><div class="psub">Update your personal information and password</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="an a2">
+      <div class="gc">
+        <div class="gcb">
+          <div style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--S2);margin-bottom:18px;"><i class="fas fa-id-card" style="margin-right:6px;"></i>Personal Information</div>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="fg">
+              <label class="fl">First Name</label>
+              <input type="text" name="first_name" class="fc" value="{{ user.first_name }}" required>
+            </div>
+            <div class="fg">
+              <label class="fl">Last Name</label>
+              <input type="text" name="last_name" class="fc" value="{{ user.last_name }}" required>
+            </div>
+            <div class="fg">
+              <label class="fl">Email (cannot change)</label>
+              <input type="email" class="fc" value="{{ user.username }}" disabled style="opacity:.7;">
+            </div>
+            <button type="submit" class="btn btn-crop bw" style="padding:12px;"><i class="fas fa-save"></i> Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="gc">
+        <div class="gcb">
+          <div style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--S2);margin-bottom:18px;"><i class="fas fa-lock" style="margin-right:6px;"></i>Change Password</div>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="fg">
+              <label class="fl">Current Password</label>
+              <input type="password" name="old_password" class="fc" placeholder="Enter current password">
+            </div>
+            <div class="fg">
+              <label class="fl">New Password</label>
+              <input type="password" name="new_password" class="fc" placeholder="Min. 8 characters">
+            </div>
+            <button type="submit" class="btn btn-wheat bw" style="padding:12px;"><i class="fas fa-key"></i> Change Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Fertilizer Report{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌿 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink act"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-w"><i class="fas fa-flask"></i></div>
+        <div>
+          <div class="ptitle">Fertilizer Report</div>
+          <div class="psub">Your personalised soil nutrient and fertilizer recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;" class="an a1">
+      <div class="gc">
+        <div class="gcb">
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-vial" style="margin-right:6px;"></i>Soil Nutrient Analysis</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
+            <div style="background:rgba(45,143,28,.07);border:1px solid rgba(45,143,28,.15);border-radius:var(--r);padding:14px;text-align:center;">
+              <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.06em;margin-bottom:3px;">Nitrogen (N)</div>
+              <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--G1);">{{ fert_data.n }}</div>
+              <div style="font-size:.65rem;color:var(--t5);">mg/kg</div>
+            </div>
+            <div style="background:rgba(212,150,14,.08);border:1px solid rgba(212,150,14,.18);border-radius:var(--r);padding:14px;text-align:center;">
+              <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.06em;margin-bottom:3px;">Phosphorous (P)</div>
+              <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--W1);">{{ fert_data.p }}</div>
+              <div style="font-size:.65rem;color:var(--t5);">mg/kg</div>
+            </div>
+            <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.15);border-radius:var(--r);padding:14px;text-align:center;">
+              <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.06em;margin-bottom:3px;">Potassium (K)</div>
+              <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--S2);">{{ fert_data.k }}</div>
+              <div style="font-size:.65rem;color:var(--t5);">mg/kg</div>
+            </div>
+          </div>
+
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:11px;"><i class="fas fa-thermometer-half" style="margin-right:6px;"></i>Environmental Conditions</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Temperature</span><span style="font-size:.85rem;font-weight:700;color:var(--t1);">{{ fert_data.temperature }} °C</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.1);border-radius:var(--r);"><span style="font-size:.77rem;color:var(--t4);font-weight:600;">Humidity</span><span style="font-size:.85rem;font-weight:700;color:var(--t1);">{{ fert_data.humidity }} %</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="rbox an a2">
+          <div class="rlbl"><i class="fas fa-flask" style="margin-right:5px;"></i> Recommended Fertilizer</div>
+          <div class="rval" style="font-size:1.75rem;margin:10px 0;">{{ fert_data.prediction }}</div>
+          <div style="font-size:.8rem;color:var(--t3);margin-top:8px;">Apply at recommended dosage for optimal crop growth.</div>
+        </div>
+
+        <form action="" method="POST" class="gc an a3">
+          {% csrf_token %}
+          <div class="gcb" style="padding:20px;">
+            <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;"><i class="fas fa-download" style="margin-right:5px;"></i>Actions</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <button type="submit" class="btn btn-crop bw"><i class="fas fa-download"></i> Download Report</button>
+              <button type="button" onclick="window.print()" class="btn btn-wheat bw"><i class="fas fa-print"></i> Print Report</button>
+              <a href="/dashboard" class="btn btn-glass bw"><i class="fas fa-th-large"></i> Dashboard</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

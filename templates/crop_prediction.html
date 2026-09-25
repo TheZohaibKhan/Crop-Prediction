@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Crop Prediction{% endblock %}
+{% block extra_head %}
+<style>
+.two-col-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;}
+.info-panel{background:var(--card);border:1px solid var(--cardb);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh);}
+.info-panel-img{width:100%;height:180px;object-fit:cover;display:block;filter:brightness(.78) saturate(1.1);}
+.info-panel-body{padding:22px;}
+.info-tip-row{display:flex;align-items:flex-start;gap:11px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(180,130,10,.1);}
+.info-tip-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.itr-dot{width:7px;height:7px;border-radius:50%;background:var(--G2);flex-shrink:0;margin-top:6px;}
+.itr-title{font-weight:700;font-size:.83rem;color:var(--t1);margin-bottom:2px;}
+.itr-val{font-size:.77rem;color:var(--t3);line-height:1.55;}
+@media(max-width:900px){.two-col-layout{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink act"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-g" style="background:rgba(45,143,28,.1);color:var(--G2);"><i class="fas fa-seedling"></i></div>
+        <div><div class="ptitle">Crop Prediction</div><div class="psub">Enter your soil & environment data to get the best crop recommendation</div></div>
+      </div>
+    </div>
+    <div class="two-col-layout an a2">
+      <!-- FORM CARD -->
+      <div class="gc">
+        <div class="gcb">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="g2">
+              <div class="fg"><label class="fl">Farmer Name</label><input type="text" name="farmer_name" class="fc" value="{{ farmer_name }}" placeholder="Full name"></div>
+              <div class="fg"><label class="fl">Contact No.</label><input type="number" name="contact_no" class="fc" value="{{ contact_no }}" placeholder="10-digit"></div>
+            </div>
+            <div class="sp">
+              <div class="splbl"><i class="fas fa-vial" style="margin-right:5px;"></i>Soil Nutrients</div>
+              <div class="g2">
+                <div class="fg" style="margin-bottom:11px;"><label class="fl">Nitrogen (N)</label><div class="iuw"><input type="number" name="n" class="fc" value="{{ n }}" placeholder="0–100"><span class="iuu">mg/kg</span></div></div>
+                <div class="fg" style="margin-bottom:11px;"><label class="fl">Phosphorous (P)</label><div class="iuw"><input type="number" name="p" class="fc" value="{{ p }}" placeholder="0–100"><span class="iuu">mg/kg</span></div></div>
+                <div class="fg" style="margin-bottom:0;"><label class="fl">Potassium (K)</label><div class="iuw"><input type="number" name="k" class="fc" value="{{ k }}" placeholder="0–100"><span class="iuu">mg/kg</span></div></div>
+                <div class="fg" style="margin-bottom:0;"><label class="fl">Soil pH</label><div class="iuw"><input type="text" name="ph" class="fc" value="{{ ph }}" placeholder="0–14"><span class="iuu">pH</span></div></div>
+              </div>
+            </div>
+            <div class="sp">
+              <div class="splbl"><i class="fas fa-cloud-sun" style="margin-right:5px;"></i>Weather & Environment</div>
+              <div class="g3">
+                <div class="fg" style="margin-bottom:0;"><label class="fl">Temperature</label><div class="iuw"><input type="text" name="temperature" class="fc" value="{{ temperature }}" placeholder="25.5"><span class="iuu">°C</span></div></div>
+                <div class="fg" style="margin-bottom:0;"><label class="fl">Humidity</label><div class="iuw"><input type="text" name="humidity" class="fc" value="{{ humidity }}" placeholder="80"><span class="iuu">%</span></div></div>
+                <div class="fg" style="margin-bottom:0;"><label class="fl">Rainfall</label><div class="iuw"><input type="text" name="rainfall" class="fc" value="{{ rainfall }}" placeholder="200"><span class="iuu">mm</span></div></div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-crop bw" style="padding:13px;"><i class="fas fa-magic"></i> Predict Best Crop</button>
+          </form>
+          {% if result %}
+          <div class="rbox" style="margin-top:20px;">
+            <div class="rlbl"><i class="fas fa-check-circle"></i> Recommended Crop</div>
+            <div class="rval">{{ result }}</div>
+            <div style="margin-top:8px;font-size:.83rem;color:var(--t3);">Based on your data, <strong style="color:var(--G1);">{{ result }}</strong> is the most suitable crop for your field.</div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- INFO SIDE PANEL: farmer_inspect image -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="info-panel an a3">
+          <img src="/static/images/farmer_inspect.jpg" alt="Farmer checking crops" class="info-panel-img">
+          <div class="info-panel-body">
+            <div style="font-weight:700;font-size:.92rem;color:var(--t1);margin-bottom:14px;"><i class="fas fa-lightbulb" style="color:var(--W2);margin-right:7px;"></i>Sample Values</div>
+            <div class="info-tip-row"><div class="itr-dot"></div><div><div class="itr-title">Rice</div><div class="itr-val">N:90, P:42, K:43, T:20.8, H:82, pH:6.5, R:202</div></div></div>
+            <div class="info-tip-row"><div class="itr-dot"></div><div><div class="itr-title">Wheat</div><div class="itr-val">N:20, P:67, K:20, T:23, H:82, pH:6.0, R:51</div></div></div>
+            <div class="info-tip-row"><div class="itr-dot"></div><div><div class="itr-title">Maize</div><div class="itr-val">N:77, P:48, K:22, T:22.6, H:82, pH:6.5, R:84</div></div></div>
+            <div class="info-tip-row"><div class="itr-dot"></div><div><div class="itr-title">Mango</div><div class="itr-val">N:0, P:15, K:40, T:31, H:50, pH:5.7, R:95</div></div></div>
+          </div>
+        </div>
+        <div class="gc an a4">
+          <div class="gcb">
+            <div style="font-weight:700;font-size:.9rem;color:var(--t1);margin-bottom:11px;"><i class="fas fa-brain" style="color:var(--G2);margin-right:7px;"></i>How It Works</div>
+            <div style="font-size:.81rem;color:var(--t3);line-height:1.7;">Our <strong style="color:var(--t1);">Naive Bayes ML classifier</strong> is trained on thousands of Indian soil samples. It analyses N, P, K, pH, climate and rainfall together to predict the most productive crop for your land conditions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

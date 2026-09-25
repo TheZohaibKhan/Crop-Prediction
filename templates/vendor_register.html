@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Vendor Registration{% endblock %}
+{% block extra_head %}
+<style>
+.reg-hero{min-height:calc(100vh - 100px);display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.reg-left{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px;}
+.reg-left-bg{position:absolute;inset:0;background:url('/static/images/commercial_farm.webp') center/cover no-repeat;filter:brightness(.28) saturate(1.2);}
+.reg-left-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(4,20,1,.88),rgba(14,50,5,.6),rgba(3,15,1,.9));}
+.reg-left-content{position:relative;z-index:1;text-align:center;}
+.reg-logo{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:#fff;margin-bottom:6px;}
+.reg-tagline{font-size:.88rem;color:rgba(200,255,160,.65);margin-bottom:28px;}
+.reg-feat{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);padding:14px 18px;margin-bottom:12px;text-align:left;}
+.reg-feat-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.reg-feat-t{font-weight:700;font-size:.85rem;color:#fff;}
+.reg-feat-d{font-size:.72rem;color:rgba(200,230,160,.6);margin-top:1px;}
+.reg-right{background:var(--cream);display:flex;align-items:center;justify-content:center;padding:40px;}
+.reg-form-wrap{width:100%;max-width:420px;}
+@media(max-width:900px){.reg-hero{grid-template-columns:1fr;}.reg-left{min-height:220px;padding:28px;}.reg-right{padding:28px;}}
+</style>
+{% endblock %}
+{% block body %}
+<div style="margin-top:0;padding-top:100px;">
+  <div class="reg-hero">
+    <!-- LEFT: visual panel -->
+    <div class="reg-left">
+      <div class="reg-left-bg"></div>
+      <div class="reg-left-ov"></div>
+      <div class="reg-left-content">
+        <div style="font-size:3rem;margin-bottom:10px;">🏪</div>
+        <div class="reg-logo">Agri<span style="color:var(--G4);">Smart</span></div>
+        <div class="reg-tagline">Join our vendor network today</div>
+        <div class="reg-feat">
+          <div class="reg-feat-ico" style="background:rgba(45,143,28,.2);color:var(--G4);"><i class="fas fa-store"></i></div>
+          <div><div class="reg-feat-t">Direct Market Access</div><div class="reg-feat-d">Sell directly to thousands of farmers</div></div>
+        </div>
+        <div class="reg-feat">
+          <div class="reg-feat-ico" style="background:rgba(212,150,14,.2);color:var(--W4);"><i class="fas fa-chart-line"></i></div>
+          <div><div class="reg-feat-t">Live Price Management</div><div class="reg-feat-d">Set competitive prices in real-time</div></div>
+        </div>
+        <div class="reg-feat">
+          <div class="reg-feat-ico" style="background:rgba(56,133,200,.2);color:#6cb4f0;"><i class="fas fa-shield-alt"></i></div>
+          <div><div class="reg-feat-t">Verified & Trusted</div><div class="reg-feat-d">Government-verified vendor listings</div></div>
+        </div>
+        <div style="margin-top:20px;font-size:.76rem;color:rgba(180,210,130,.5);">Already have an account? <a href="/vendor_log_in" style="color:var(--G4);font-weight:700;">Sign In</a></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: form -->
+    <div class="reg-right">
+      <div class="reg-form-wrap">
+        <div style="margin-bottom:26px;">
+          <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:var(--t1);">Create Vendor Account</div>
+          <div style="font-size:.83rem;color:var(--t4);margin-top:4px;">Fill in your details to get started on AgriSmart</div>
+        </div>
+
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="g2">
+            <div class="fg"><label class="fl">First Name</label><input type="text" class="fc" name="first_name" placeholder="First" required></div>
+            <div class="fg"><label class="fl">Last Name</label><input type="text" class="fc" name="last_name" placeholder="Last" required></div>
+          </div>
+          <div class="fg"><label class="fl">Phone Number</label><input type="number" class="fc" name="phone_number" placeholder="10-digit mobile number" required></div>
+          <div class="fg"><label class="fl">Email Address</label><input type="email" class="fc" name="username" placeholder="vendor@example.com" required></div>
+          <div class="fg"><label class="fl">Password</label><input type="password" class="fc" name="password" placeholder="Create a strong password" required></div>
+          <div class="fg"><label class="fl">Confirm Password</label><input type="password" class="fc" name="password1" placeholder="Re-enter your password" required></div>
+          <div style="font-size:.72rem;color:var(--t5);margin-bottom:16px;line-height:1.5;padding:10px;background:rgba(180,130,10,.06);border-radius:var(--r);border:1px solid rgba(180,130,10,.12);">
+            <i class="fas fa-info-circle" style="color:var(--W1);margin-right:5px;"></i>By registering, you agree to AgriSmart's vendor terms and privacy policy.
+          </div>
+          <button type="submit" class="btn btn-crop bw" style="padding:13px;"><i class="fas fa-store"></i> Register as Vendor</button>
+        </form>
+
+        <div style="text-align:center;margin-top:18px;font-size:.79rem;color:var(--t5);">
+          Are you a farmer? <a href="/register" style="color:var(--G1);font-weight:700;">Register here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

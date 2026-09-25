@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Vendor Login{% endblock %}
+{% block extra_head %}
+<style>
+.auth-wrap{min-height:calc(100vh - 100px);position:relative;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-bg{position:absolute;inset:0;background:url('/static/images/bullock_farm.jpg') center/cover no-repeat;filter:brightness(.4) saturate(1.2);}
+.auth-ov{position:absolute;inset:0;background:linear-gradient(150deg,rgba(4,16,1,.75) 0%,rgba(14,38,5,.52) 50%,rgba(3,12,1,.82) 100%);}
+.auth-card{position:relative;z-index:2;background:rgba(255,253,235,.88);backdrop-filter:blur(28px) saturate(185%);border:1.5px solid rgba(180,130,10,.22);border-radius:var(--rxxl);padding:44px 42px;width:100%;max-width:440px;box-shadow:var(--shx);overflow:hidden;}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2),var(--G3));}
+.vendor-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(45,143,28,.1);border:1px solid rgba(45,143,28,.2);color:var(--G1);padding:4px 12px;border-radius:99px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.auth-logo{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
+.auth-logo img{width:34px;}
+.auth-logo span{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--t1);}
+.auth-logo b{color:var(--G1);}
+.auth-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.auth-sub{color:var(--t4);font-size:.84rem;margin-bottom:26px;}
+.auth-sub a{color:var(--G1);font-weight:700;text-decoration:none;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .fc{padding-left:42px;}
+.input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--G2);font-size:.83rem;}
+.eye-btn{position:absolute;right:13px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--t4);font-size:.83rem;}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(180,130,10,.14);}
+.divider span{color:var(--t5);font-size:.73rem;}
+.alt-link{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:11px;border-radius:99px;text-decoration:none;border:1.5px solid rgba(180,130,10,.2);background:rgba(255,252,225,.5);color:var(--t2);font-size:.84rem;font-weight:600;transition:all .25s;}
+.alt-link:hover{border-color:rgba(30,107,16,.35);color:var(--G1);background:rgba(45,143,28,.06);}
+</style>
+{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-bg"></div>
+  <div class="auth-ov"></div>
+  <div class="auth-card an">
+    <div class="vendor-tag"><i class="fas fa-store"></i> Vendor Portal</div>
+    <div class="auth-logo"><img src="/static/images/agri_icon.png" alt=""><span>Agri<b>Smart</b></span></div>
+    <h2 class="auth-title">Vendor Sign In</h2>
+    <p class="auth-sub">No account? <a href="/vendor_register">Register as Vendor</a> · <a href="/forgot_password" style="color:var(--W1);">Forgot Password?</a></p>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="fg">
+        <label class="fl"><i class="fas fa-envelope" style="color:var(--G2);margin-right:4px;"></i>Email Address</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" name="username" class="fc" placeholder="vendor@example.com" required autofocus>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl"><i class="fas fa-lock" style="color:var(--G2);margin-right:4px;"></i>Password</label>
+        <div class="input-icon-wrap">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" name="password" id="pwd" class="fc" placeholder="Enter your password" required style="padding-right:42px;">
+          <span class="eye-btn" onclick="tp()"><i class="fas fa-eye" id="eye"></i></span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-wheat bw" style="padding:13px;"><i class="fas fa-store"></i> Sign In as Vendor</button>
+    </form>
+    <div class="divider"><span>or</span></div>
+    <a href="/log_in" class="alt-link"><i class="fas fa-tractor" style="color:var(--G2);"></i> Login as Farmer</a>
+  </div>
+</div>
+<script>function tp(){var i=document.getElementById('pwd'),e=document.getElementById('eye');if(i.type==='password'){i.type='text';e.className='fas fa-eye-slash';}else{i.type='password';e.className='fas fa-eye';}}</script>
+{% endblock %}

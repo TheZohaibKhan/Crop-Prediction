@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Disease Prediction Result{% endblock %}
+{% block extra_head %}
+<style>
+.result-hero{border-radius:var(--rxxl);overflow:hidden;position:relative;margin-bottom:24px;background:var(--card);border:1px solid var(--cardb);box-shadow:var(--shm);}
+.result-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--W2),var(--G3),var(--W3));}
+.result-inner{display:grid;grid-template-columns:auto 1fr;gap:0;}
+.result-img-wrap{width:280px;flex-shrink:0;position:relative;}
+.result-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.result-img-overlay{position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--cream) 100%);}
+.result-body{padding:32px 36px;}
+.result-badge{display:inline-flex;align-items:center;gap:7px;padding:4px 13px;border-radius:99px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.badge-disease{background:rgba(192,64,64,.1);color:#c04040;border:1px solid rgba(192,64,64,.2);}
+.badge-healthy{background:rgba(45,143,28,.1);color:var(--G1);border:1px solid rgba(45,143,28,.2);}
+.result-crop{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.result-fert{display:inline-flex;align-items:center;gap:8px;background:rgba(212,150,14,.12);border:1px solid rgba(212,150,14,.28);border-radius:var(--rl);padding:11px 18px;margin-top:14px;font-weight:700;font-size:.88rem;color:var(--W1);}
+.info-section{background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.13);border-radius:var(--rl);padding:18px;margin-bottom:15px;}
+.info-section-title{font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.info-section-body{font-size:.84rem;color:var(--t2);line-height:1.75;}
+.prevent-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(180,130,10,.09);}
+.prevent-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.prevent-dot{width:7px;height:7px;border-radius:50%;background:var(--G2);flex-shrink:0;margin-top:6px;}
+@media(max-width:900px){.result-inner{grid-template-columns:1fr;}.result-img-wrap{width:100%;height:200px;}.result-img-overlay{display:none;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink act"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-s"><i class="fas fa-microscope"></i></div>
+        <div>
+          <div class="ptitle">Disease Detection Result</div>
+          <div class="psub">AI-powered leaf disease analysis complete</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-hero an a1">
+      <div class="result-inner">
+        <div class="result-img-wrap">
+          <img src="{{ image.Images.url }}" alt="Analysed Leaf">
+          <div class="result-img-overlay"></div>
+        </div>
+        <div class="result-body">
+          <div class="result-badge {% if 'healthy' in predicted_label|lower %}badge-healthy{% else %}badge-disease{% endif %}">
+            <i class="fas {% if 'healthy' in predicted_label|lower %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+            {% if 'healthy' in predicted_label|lower %}Healthy Plant{% else %}Disease Detected{% endif %}
+          </div>
+          <div class="result-crop" id="predicted-label">{{ predicted_label }}</div>
+          <div style="font-size:.83rem;color:var(--t4);">Confidence: AI Model Analysis Complete</div>
+          <div class="result-fert" id="fertilizer-display" style="display:none;">
+            <i class="fas fa-flask"></i>
+            <span>Recommended Fertilizer: <strong id="fert-text"></strong></span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+            <a href="/crop_dis" class="btn btn-crop"><i class="fas fa-redo"></i> Analyse Another</a>
+            <a href="/dashboard" class="btn btn-glass"><i class="fas fa-th-large"></i> Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;" class="an a2">
+      <div class="gc">
+        <div class="gcb">
+          <div class="info-section-title"><i class="fas fa-info-circle" style="color:#3885c8;"></i> About This Condition</div>
+          <div class="info-section-body">{{ predicted_description }}</div>
+        </div>
+      </div>
+      <div class="gc">
+        <div class="gcb">
+          <div class="info-section-title"><i class="fas fa-shield-alt" style="color:var(--G2);"></i> Preventions & Treatment</div>
+          <div class="info-section-body">{{ prevention }}</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const fertilizerData = {
+  "Apple___Black_rot":"NPK 10-10-10","Apple___Cedar_apple_rust":"NPK 10-10-10","Apple___healthy":"Compost / NPK 10-10-10","Blueberry___healthy":"Acidic fertilizer (4-3-4)","Cherry_(including_sour)___Powdery_mildew":"NPK 12-4-8","Cherry_(including_sour)___healthy":"Balanced fertilizer","Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot":"Nitrogen-rich fertilizer","Corn_(maize)__Common_rust":"NPK 20-10-10","Corn_(maize)___Northern_Leaf_Blight":"Nitrogen + Potassium","Corn_(maize)___healthy":"NPK 20-20-20","Grape___Black_rot":"NPK 10-10-10","Grape__Esca(Black_Measles)":"Organic compost","Grape__Leaf_blight(Isariopsis_Leaf_Spot)":"Balanced fertilizer","Grape___healthy":"NPK 10-10-10","Orange__Haunglongbing (Citrus_greening)":"Micronutrient blend (Zinc, Mg)","Peach___Bacterial_spot":"NPK 12-12-12","Peach___healthy":"Balanced fertilizer","Pepper,bell__Bacterial_spot":"Calcium-rich fertilizer","Pepper,bell__healthy":"NPK 5-10-10","Potato___Early_blight":"Low Nitrogen, High Potassium","Potato___Late_blight":"Potassium-rich fertilizer","Potato___healthy":"Balanced NPK","Raspberry___healthy":"Compost, NPK 10-10-10","Soybean___healthy":"Rhizobium-treated soil","Squash___Powdery_mildew":"Potassium-rich","Strawberry___Leaf_scorch":"NPK 10-10-10","Strawberry___healthy":"Organic compost","Tomato___Bacterial_spot":"Calcium-rich","Tomato___Early_blight":"Low Nitrogen, High Potassium","Tomato___Late_blight":"Potassium + Phosphorus rich","Tomato___Leaf_Mold":"NPK 10-5-10","Tomato___Septoria_leaf_spot":"Balanced fertilizer","Tomato___Spider_mites":"NPK 10-10-10","Tomato___Target_Spot":"Potassium-based","Tomato___Tomato_Yellow_Leaf_Curl_Virus":"Organic fertilizer","Tomato___Tomato_mosaic_virus":"Balanced NPK","Tomato___healthy":"NPK 5-10-10 or Tomato booster"
+};
+const lbl = document.getElementById('predicted-label').innerText.trim();
+const fert = fertilizerData[lbl];
+if (fert) {
+  document.getElementById('fert-text').innerText = fert;
+  document.getElementById('fertilizer-display').style.display = 'inline-flex';
+}
+</script>
+{% endblock %}

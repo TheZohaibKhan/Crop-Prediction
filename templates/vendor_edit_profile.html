@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Profile | Vendor | AgriSmart</title>
+  <link rel="icon" href="/static/images/agri_icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  :root{--G1:#1e6b10;--G2:#2d8f1c;--G3:#4ab530;--G4:#7dd65f;--W1:#b87c08;--W2:#d4960e;--W3:#f0b429;--W4:#fcd96a;--W5:#fff8e1;--S1:#6b2e08;--S2:#9b4515;--cream:#fdfaf2;--card:rgba(255,252,235,0.84);--cardb:rgba(180,130,10,0.20);--t1:#0f1e05;--t2:#1e3d0a;--t3:#3d6020;--t4:#6b8c45;--t5:#9aaa72;--r:10px;--rl:16px;--rxl:22px;--rxxl:28px;--sh:0 2px 10px rgba(60,35,0,.07),0 6px 22px rgba(60,35,0,.06);--shm:0 8px 30px rgba(60,35,0,.12);--shx:0 16px 50px rgba(60,35,0,.18);}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--t1);}
+  .sky{position:fixed;inset:0;z-index:0;background:linear-gradient(175deg,#fffef5 0%,#fdf8e2 60%,#f8f1d0 100%);}
+  .topbar{background:linear-gradient(135deg,var(--G1),var(--G2));height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;font-size:.74rem;color:rgba(255,255,255,.88);font-weight:500;position:fixed;top:0;left:0;right:0;z-index:1001;}
+  .nav{position:fixed;top:36px;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(255,253,238,.92);backdrop-filter:blur(22px) saturate(170%);border-bottom:1.5px solid rgba(180,130,10,.16);box-shadow:0 2px 16px rgba(60,35,0,.07);}
+  .nbrand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nbrand img{width:34px;filter:drop-shadow(0 2px 5px rgba(110,70,0,.28));}
+  .nbrand-txt{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);}
+  .nbrand-txt b{color:var(--G2);}
+  .vendor-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(30,107,16,.1);border:1px solid rgba(30,107,16,.2);color:var(--G1);padding:3px 11px;border-radius:99px;font-size:.68rem;font-weight:700;margin-left:8px;}
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .nav-user{font-size:.8rem;color:var(--t4);}
+  .nav-user strong{color:var(--t2);}
+  .nav-logout{padding:8px 16px;border-radius:99px;background:transparent;border:1.5px solid rgba(192,64,64,.22);color:#c04040;font-size:.8rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .22s;}
+  .nav-logout:hover{background:rgba(192,64,64,.08);border-color:rgba(192,64,64,.38);}
+  .pw{padding-top:100px;position:relative;z-index:10;}
+  .app{display:flex;min-height:calc(100vh - 100px);}
+  .sb{width:254px;min-height:calc(100vh - 100px);position:fixed;top:100px;left:0;z-index:100;overflow-y:auto;padding:0;background:rgba(255,253,235,.94);backdrop-filter:blur(24px) saturate(165%);border-right:1.5px solid rgba(180,130,10,.15);box-shadow:3px 0 20px rgba(60,35,0,.06);}
+  .sb-img{width:100%;height:88px;object-fit:cover;display:block;filter:brightness(.65) saturate(1.1);}
+  .sb-img-overlay{position:relative;margin-bottom:18px;}
+  .sb-img-overlay::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(255,253,235,1) 0%,transparent 60%);}
+  .sbu{text-align:center;padding:0 18px 18px;border-bottom:1px solid rgba(180,130,10,.12);margin-bottom:14px;}
+  .sbav{width:58px;height:58px;border-radius:50%;margin:0 auto 11px;background:linear-gradient(135deg,var(--S1),var(--S2));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:#fff;box-shadow:0 4px 14px rgba(107,46,8,.28),0 0 0 3px rgba(212,150,14,.2);}
+  .sbn{font-weight:700;font-size:.9rem;color:var(--t1);}
+  .sbr{display:inline-flex;align-items:center;gap:4px;margin-top:5px;background:rgba(180,130,10,.1);border:1px solid rgba(180,130,10,.2);color:var(--W1);padding:2px 10px;border-radius:99px;font-size:.66rem;font-weight:700;letter-spacing:.05em;}
+  .sb-nav{padding:0 11px;}
+  .sb-lbl{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--t5);padding:0 11px;margin:15px 0 4px;}
+  .slink{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r);margin-bottom:2px;color:var(--t4);font-weight:600;font-size:.83rem;text-decoration:none;transition:all .22s;border:1px solid transparent;}
+  .slink i{width:16px;text-align:center;font-size:.8rem;}
+  .slink:hover{background:rgba(240,180,41,.14);color:var(--G1);border-color:rgba(180,130,10,.17);padding-left:17px;}
+  .slink.act{background:rgba(30,107,16,.1);color:var(--G1);font-weight:700;border-color:rgba(30,107,16,.2);}
+  .slink.lo{color:#c04040;}
+  .mc{margin-left:254px;flex:1;padding:28px;}
+
+  .ph{margin-bottom:24px;}
+  .ph-row{display:flex;align-items:center;gap:12px;}
+  .ph-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .ptitle{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--t1);}
+  .psub{color:var(--t4);font-size:.84rem;margin-top:4px;}
+  .gc{background:var(--card);backdrop-filter:blur(14px) saturate(165%);border:1px solid var(--cardb);border-radius:var(--rxl);box-shadow:var(--sh);overflow:hidden;}
+  .gc::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--W2),var(--G3));}
+  .gcb{padding:26px;}
+  .fg{margin-bottom:16px;}
+  .fl{display:block;font-size:.73rem;font-weight:700;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em;}
+  .fc{width:100%;padding:11px 14px;background:rgba(255,252,228,.88);border:1.5px solid rgba(180,130,10,.2);border-radius:var(--r);font-size:.87rem;font-family:inherit;color:var(--t1);outline:none;transition:all .25s;}
+  .fc:focus{background:#fff;border-color:var(--G2);box-shadow:0 0 0 3px rgba(45,143,28,.11);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 26px;border-radius:99px;font-weight:700;font-size:.87rem;font-family:inherit;cursor:pointer;border:none;transition:all .25s;letter-spacing:.04em;text-decoration:none;}
+  .btn-crop{background:linear-gradient(135deg,var(--G1),var(--G2));color:#fff;box-shadow:0 4px 18px rgba(30,107,16,.35);}
+  .btn-wheat{background:linear-gradient(135deg,var(--W1),var(--W2));color:#fff;box-shadow:0 4px 18px rgba(180,120,0,.3);}
+  .bw{width:100%;}
+  ::-webkit-scrollbar{width:5px;background:var(--W5);}::-webkit-scrollbar-thumb{background:rgba(180,130,10,.28);border-radius:3px;}
+  </style>
+</head>
+<body>
+<div class="sky"></div>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <span><i class="fas fa-map-marker-alt"></i>AgriSmart Platform</span>
+    <span><i class="fas fa-store"></i>Vendor Portal</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <div style="display:flex;align-items:center;">
+    <a href="/" class="nbrand"><img src="/static/images/agri_icon.png" alt=""><span class="nbrand-txt">Agri<b>Smart</b></span></a>
+    <span class="vendor-badge"><i class="fas fa-store"></i> Vendor Portal</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user"><i class="fas fa-user-circle" style="color:var(--G2);margin-right:4px;"></i>Welcome, <strong>{{ vendor.first_name }}</strong></span>
+    <a href="/log_out" class="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</nav>
+
+<div class="pw">
+  <div class="app">
+    <aside class="sb">
+      <div class="sb-img-overlay"><img src="/static/images/farmer_harvest.jpg" alt="" class="sb-img"></div>
+      <div class="sbu">
+        <div class="sbav">{{ vendor.first_name|first|upper }}{{ vendor.last_name|first|upper }}</div>
+        <div class="sbn">{{ vendor.first_name }} {{ vendor.last_name }}</div>
+        <div class="sbr">🏪 Vendor</div>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-lbl">Main Menu</div>
+        <a href="/vendor_dashboard" class="slink"><i class="fas fa-store"></i> Crop Listings</a>
+        <a href="/vendor_edit_profile" class="slink act"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.1);">
+          <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="mc">
+      <div class="ph">
+        <div class="ph-row">
+          <div class="ph-ico fi-g"><i class="fas fa-user-edit"></i></div>
+          <div><div class="ptitle">Edit Profile</div><div class="psub">Update your personal information and password</div></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="gc">
+          <div class="gcb">
+            <div style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--S2);margin-bottom:18px;"><i class="fas fa-id-card" style="margin-right:6px;"></i>Personal Information</div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="fg">
+                <label class="fl">First Name</label>
+                <input type="text" name="first_name" class="fc" value="{{ vendor.first_name }}" required>
+              </div>
+              <div class="fg">
+                <label class="fl">Last Name</label>
+                <input type="text" name="last_name" class="fc" value="{{ vendor.last_name }}" required>
+              </div>
+              <div class="fg">
+                <label class="fl">Phone Number</label>
+                <input type="text" name="phone" class="fc" value="{{ vendor.phone_number }}">
+              </div>
+              <div class="fg">
+                <label class="fl">Email (cannot change)</label>
+                <input type="email" class="fc" value="{{ vendor.email }}" disabled style="opacity:.7;">
+              </div>
+              <button type="submit" class="btn btn-crop bw" style="padding:12px;"><i class="fas fa-save"></i> Save Changes</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="gc">
+          <div class="gcb">
+            <div style="font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--S2);margin-bottom:18px;"><i class="fas fa-lock" style="margin-right:6px;"></i>Change Password</div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="fg">
+                <label class="fl">Current Password</label>
+                <input type="password" name="old_password" class="fc" placeholder="Enter current password">
+              </div>
+              <div class="fg">
+                <label class="fl">New Password</label>
+                <input type="password" name="new_password" class="fc" placeholder="Min. 8 characters">
+              </div>
+              <button type="submit" class="btn btn-wheat bw" style="padding:12px;"><i class="fas fa-key"></i> Change Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

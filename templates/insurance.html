@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block title %}Insurance Schemes{% endblock %}
+{% block body %}
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink act"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <div class="ptitle">Crop Insurance Schemes</div>
+          <div class="psub">Government-backed insurance schemes to protect farmers from crop losses</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scheme Cards -->
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+      <div class="gc an a1">
+        <div class="gcb">
+          <div style="display:flex;align-items:flex-start;gap:18px;">
+            <div class="fcard-ico fi-g" style="width:54px;height:54px;flex-shrink:0;border-radius:14px;">
+              <i class="fas fa-leaf" style="font-size:1.3rem;"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);">Pradhan Mantri Fasal Bima Yojana (PMFBY)</h2>
+                <a href="https://nationalinsurance.nic.co.in/en/pradhan-mantri-fasal-bima-yojana-pmfby" target="_blank" class="btn btn-crop" style="padding:8px 18px;font-size:.78rem;"><i class="fas fa-external-link-alt"></i> Visit Portal</a>
+              </div>
+              <p style="font-size:.84rem;color:var(--t3);line-height:1.7;margin-bottom:14px;">Comprehensive insurance protection for food crops, oilseeds and annual horticultural/commercial crops notified by state governments. Claims of full Sum Insured are paid without capping or reduction.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;">
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Kharif Season</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--G1);font-weight:700;">2%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Rabi Season</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--W1);font-weight:700;">1.5%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Horticulture</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--S2);font-weight:700;">5%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+              </div>
+              <div style="margin-top:12px;padding:10px 14px;background:rgba(45,143,28,.07);border-radius:var(--r);border-left:3px solid var(--G2);font-size:.78rem;color:var(--t2);">
+                <i class="fas fa-info-circle" style="color:var(--G2);margin-right:6px;"></i>Prevented sowing/planting risk: up to 25% of sum insured paid when sowing fails due to adverse weather.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gc an a2">
+        <div class="gcb">
+          <div style="display:flex;align-items:flex-start;gap:18px;">
+            <div class="fcard-ico fi-b" style="width:54px;height:54px;flex-shrink:0;border-radius:14px;background:rgba(56,133,200,.1);color:#3885c8;">
+              <i class="fas fa-cloud-rain" style="font-size:1.3rem;"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);">Weather Based Crop Insurance Scheme (WBCIS)</h2>
+                <a href="https://vikaspedia.in/agriculture/agri-insurance/weather-based-crop-insurance" target="_blank" class="btn btn-wheat" style="padding:8px 18px;font-size:.78rem;"><i class="fas fa-external-link-alt"></i> Visit Portal</a>
+              </div>
+              <p style="font-size:.84rem;color:var(--t3);line-height:1.7;margin-bottom:14px;">Insurance protection for notified food crops, oilseeds and horticultural/commercial crops. Covers weather index deviations including rainfall, temperature, relative humidity, and wind speed.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;">
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Kharif Season</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--G1);font-weight:700;">2%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Rabi Season</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--W1);font-weight:700;">1.5%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+                <div class="sp" style="margin-bottom:0;text-align:center;"><div style="font-size:.64rem;font-weight:800;text-transform:uppercase;color:var(--t5);letter-spacing:.07em;margin-bottom:4px;">Commercial Crops</div><div style="font-family:'Fraunces',serif;font-size:1.2rem;color:var(--S2);font-weight:700;">5%</div><div style="font-size:.7rem;color:var(--t4);">of sum insured</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gc an a3">
+        <div class="gcb">
+          <div style="display:flex;align-items:flex-start;gap:18px;">
+            <div class="fcard-ico fi-w" style="width:54px;height:54px;flex-shrink:0;border-radius:14px;">
+              <i class="fas fa-tree" style="font-size:1.3rem;"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);">Coconut Palm Insurance Scheme (CPIS)</h2>
+                <a href="https://www.indiafilings.com/learn/coconut-palm-insurance-scheme" target="_blank" class="btn btn-out" style="padding:8px 18px;font-size:.78rem;"><i class="fas fa-external-link-alt"></i> Visit Portal</a>
+              </div>
+              <p style="font-size:.84rem;color:var(--t3);line-height:1.7;margin-bottom:14px;">Dedicated insurance protection for Coconut Palm growers. Premium rates vary by plant age group, with generous subsidies to make it accessible for all types of farmers.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+                <div class="sp" style="margin-bottom:0;"><div style="font-size:.7rem;font-weight:700;color:var(--t3);margin-bottom:4px;">Plant age 4–15 years</div><div style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--G1);font-weight:700;">₹9.00 / palm</div></div>
+                <div class="sp" style="margin-bottom:0;"><div style="font-size:.7rem;font-weight:700;color:var(--t3);margin-bottom:4px;">Plant age 16–60 years</div><div style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--W1);font-weight:700;">₹14.00 / palm</div></div>
+                <div class="sp" style="margin-bottom:0;"><div style="font-size:.7rem;font-weight:700;color:var(--t3);margin-bottom:4px;">Premium subsidy</div><div style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--S2);font-weight:700;">50–75%</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gc an a4">
+        <div class="gcb">
+          <div style="display:flex;align-items:flex-start;gap:18px;">
+            <div class="fcard-ico fi-s" style="width:54px;height:54px;flex-shrink:0;border-radius:14px;">
+              <i class="fas fa-boxes" style="font-size:1.3rem;"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                <h2 style="font-family:'Fraunces',serif;font-size:1.18rem;font-weight:700;color:var(--t1);">Unified Package Insurance Scheme (UPIS)</h2>
+                <a href="https://vikaspedia.in/agriculture/agri-insurance/unified-package-insurance-scheme" target="_blank" class="btn btn-out" style="padding:8px 18px;font-size:.78rem;"><i class="fas fa-external-link-alt"></i> Visit Portal</a>
+              </div>
+              <p style="font-size:.84rem;color:var(--t3);line-height:1.7;margin-bottom:14px;">Pilot scheme in 45 districts offering comprehensive risk coverage for crops, assets, life, and student safety. A single application form grants access to all insurance products through one window.</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;">
+                <!-- Manually written list instead of string split -->
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Crop Insurance</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Life (PMJJBY)</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Accident (PMSBY)</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Student Safety</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Household</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Agri Implements</div>
+                <div style="background:rgba(155,69,21,.07);border:1px solid rgba(155,69,21,.14);border-radius:var(--r);padding:9px 11px;font-size:.75rem;font-weight:600;color:var(--S2);text-align:center;"><i class="fas fa-check-circle" style="color:var(--G2);margin-right:4px;"></i>Tractor</div>
+              </div>
+              <div style="margin-top:12px;padding:10px 14px;background:rgba(155,69,21,.06);border-radius:var(--r);border-left:3px solid var(--S2);font-size:.78rem;color:var(--t2);">
+                <i class="fas fa-info-circle" style="color:var(--S2);margin-right:6px;"></i>Crop insurance is compulsory. Farmers may choose at least 2 sections from the remaining options.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+{% endblock %}

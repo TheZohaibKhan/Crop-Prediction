@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Agriculture News{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink act"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-newspaper"></i></div>
+        <div><div class="ptitle">Latest Agricultural News</div><div class="psub">Search for farming news, government schemes, and weather updates</div></div>
+      </div>
+    </div>
+    <div class="gc an a2" style="margin-bottom:22px;">
+      <div class="gcb" style="padding:18px 24px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="position:relative;flex:1;">
+            <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t5);font-size:.85rem;"></i>
+            <input type="text" id="search-input" class="fc" style="padding-left:38px;" placeholder="Search for agricultural news, government schemes, crop updates...">
+          </div>
+          <button class="btn btn-crop" id="search-btn" onclick="fetchNews()" style="white-space:nowrap;padding:11px 22px;"><i class="fas fa-search"></i> Search</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;">
+          <span style="font-size:.71rem;font-weight:700;color:var(--t5);margin-right:2px;">Quick:</span>
+          <button onclick="quickSearch('Kharif crops')" class="qtag">Kharif crops</button>
+          <button onclick="quickSearch('Rabi season')" class="qtag">Rabi season</button>
+          <button onclick="quickSearch('MSP prices')" class="qtag">MSP prices</button>
+          <button onclick="quickSearch('PM-KISAN')" class="qtag">PM-KISAN</button>
+          <button onclick="quickSearch('Soil health')" class="qtag">Soil health</button>
+          <button onclick="quickSearch('Monsoon update')" class="qtag">Monsoon update</button>
+        </div>
+      </div>
+    </div>
+    <div id="news-container" class="fgrid an a3"></div>
+    <div id="pagination-controls" style="text-align:center;margin-top:20px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;"></div>
+    <div id="empty-state" style="text-align:center;padding:60px 24px;display:none;">
+      <div style="font-size:3rem;margin-bottom:14px;">🔍</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--t2);margin-bottom:6px;">No news found</div>
+      <div style="font-size:.84rem;color:var(--t4);">Try a different search term or one of the quick search tags above.</div>
+    </div>
+  </main>
+</div>
+<style>
+.qtag{padding:4px 11px;border-radius:99px;font-size:.72rem;font-weight:600;border:1px solid rgba(180,130,10,.22);background:rgba(255,248,205,.6);color:var(--t2);cursor:pointer;transition:all .2s;font-family:inherit;}
+.qtag:hover{background:rgba(45,143,28,.1);color:var(--G1);border-color:rgba(45,143,28,.2);}
+</style>
+<script>
+var currentPage=1,itemsPerPage=6,allNews=[];
+function quickSearch(t){document.getElementById('search-input').value=t;fetchNews();}
+async function fetchNews(){
+  var q=document.getElementById('search-input').value.trim();
+  if(!q){alert('Please enter a search term!');return;}
+  var btn=document.getElementById('search-btn');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Loading...';btn.disabled=true;
+  try{
+    var res=await fetch('/search_news/?query='+encodeURIComponent(q));
+    allNews=await res.json();currentPage=1;renderNews();renderPagination();
+  }catch(e){console.error(e);}
+  finally{btn.innerHTML='<i class="fas fa-search"></i> Search';btn.disabled=false;}
+}
+function renderNews(){
+  var c=document.getElementById('news-container'),e=document.getElementById('empty-state');
+  c.innerHTML='';
+  if(!allNews||allNews.length===0){e.style.display='block';return;}
+  e.style.display='none';
+  var start=(currentPage-1)*itemsPerPage;
+  allNews.slice(start,start+itemsPerPage).forEach(function(n,i){
+    var d=document.createElement('div');d.className='fcard an';d.style.animationDelay=(i*0.07)+'s';
+    d.innerHTML='<div class="fcard-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-newspaper"></i></div><div class="fcard-tit" style="font-size:.88rem;">'+(n.title||'Untitled')+'</div><div class="fcard-dsc">'+(n.description||'No description available.')+'</div><a href="'+n.url+'" target="_blank" class="btn btn-crop" style="margin-top:12px;padding:8px 16px;font-size:.77rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Read Full Story</a>';
+    c.appendChild(d);
+  });
+}
+function renderPagination(){
+  var ctrl=document.getElementById('pagination-controls');ctrl.innerHTML='';
+  var total=Math.ceil(allNews.length/itemsPerPage);if(total<=1)return;
+  for(var i=1;i<=total;i++){
+    (function(pg){
+      var b=document.createElement('button');b.textContent=pg;
+      b.style.cssText='padding:7px 14px;border-radius:99px;font-size:.8rem;font-weight:700;border:1.5px solid '+(pg===currentPage?'var(--G2)':'rgba(180,130,10,.22)')+';background:'+(pg===currentPage?'rgba(45,143,28,.1)':'transparent')+';color:'+(pg===currentPage?'var(--G1)':'var(--t3)')+';cursor:pointer;transition:all .2s;font-family:inherit;';
+      b.onclick=function(){currentPage=pg;renderNews();renderPagination();window.scrollTo({top:0,behavior:'smooth'});};
+      ctrl.appendChild(b);
+    })(i);
+  }
+}
+</script>
+{% endblock %}

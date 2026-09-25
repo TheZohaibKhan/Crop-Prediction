@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Loans & Schemes{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink act"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="mc">
+    <div class="ph an">
+      <div class="ph-row">
+        <div class="ph-ico fi-w"><i class="fas fa-hand-holding-usd"></i></div>
+        <div>
+          <div class="ptitle">Agricultural Loans & Schemes</div>
+          <div class="psub">Government-backed financial schemes to empower Indian farmers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fgrid an a2">
+
+      <div class="fcard">
+        <div class="fcard-ico fi-g"><i class="fas fa-credit-card"></i></div>
+        <div class="fcard-num">01</div>
+        <div class="fcard-tit">PM Kisan Credit Card (PMKCC)</div>
+        <div class="fcard-dsc">Short-term credit for agricultural needs with simplified delivery and interest rate concessions for timely repayment.</div>
+        <a href="https://eseva.csccloud.in/KCC/Default.aspx" target="_blank" class="btn btn-crop" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Apply Now</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="fcard">
+        <div class="fcard-ico fi-w"><i class="fas fa-percentage"></i></div>
+        <div class="fcard-num">02</div>
+        <div class="fcard-tit">Interest Subvention — Crop Loans</div>
+        <div class="fcard-dsc">Short-term crop loans at subsidized interest. Prompt repayment earns additional interest rate reductions via NABARD.</div>
+        <a href="https://www.nabard.org/content1.aspx?id=602&catid=23&mid=23" target="_blank" class="btn btn-wheat" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Learn More</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="fcard">
+        <div class="fcard-ico fi-s"><i class="fas fa-seedling"></i></div>
+        <div class="fcard-num">03</div>
+        <div class="fcard-tit">National Horticulture Mission (NHM)</div>
+        <div class="fcard-dsc">Crop insurance scheme protecting against natural calamities, pests, and diseases. Heavily subsidized premiums make it affordable.</div>
+        <a href="https://en.m.wikipedia.org/wiki/National_Horticulture_Mission" target="_blank" class="btn btn-out" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Learn More</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="fcard">
+        <div class="fcard-ico fi-b"><i class="fas fa-globe-asia"></i></div>
+        <div class="fcard-num">04</div>
+        <div class="fcard-tit">National Mission for Sustainable Agriculture</div>
+        <div class="fcard-dsc">NMSA supports climate-resilient farming, water management, and resource conservation to build long-term farm sustainability.</div>
+        <a href="https://vikaspedia.in/agriculture/policies-and-schemes/crops-related/krishi-unnati-yojana/national-mission-for-sustainable-agriculture-1/national-mission-for-sustainable-agriculture" target="_blank" class="btn btn-out" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Learn More</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="fcard">
+        <div class="fcard-ico fi-o"><i class="fas fa-warehouse"></i></div>
+        <div class="fcard-num">05</div>
+        <div class="fcard-tit">Agriculture Infrastructure Fund</div>
+        <div class="fcard-dsc">Financial support for post-harvest infrastructure and community farming assets — helping farmers and agri-entrepreneurs grow.</div>
+        <a href="https://www.agriinfra.dac.gov.in/" target="_blank" class="btn btn-wheat" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Apply Now</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="fcard">
+        <div class="fcard-ico fi-g"><i class="fas fa-rupee-sign"></i></div>
+        <div class="fcard-num">06</div>
+        <div class="fcard-tit">MUDRA Yojana</div>
+        <div class="fcard-dsc">Micro loans for small entrepreneurs including those in agriculture and allied activities — no collateral required for Shishu category.</div>
+        <a href="https://www.myscheme.gov.in/schemes/pmmy" target="_blank" class="btn btn-crop" style="margin-top:14px;padding:9px 18px;font-size:.78rem;width:100%;justify-content:center;"><i class="fas fa-external-link-alt"></i> Apply Now</a>
+        <div class="fcard-arr"><i class="fas fa-arrow-right"></i></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+{% endblock %}

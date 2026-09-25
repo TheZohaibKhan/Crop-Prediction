@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Disease Detection{% endblock %}
+{% block extra_head %}
+<style>
+.dis-page{min-height:calc(100vh - 100px);position:relative;display:flex;}
+.dis-main{margin-left:256px;flex:1;padding:0;position:relative;overflow:hidden;}
+.dis-bg{position:absolute;inset:0;background:url('/static/images/leaf_grass.jpg') center/cover no-repeat;filter:brightness(.55) saturate(1.3);}
+.dis-bg-ov{position:absolute;inset:0;background:linear-gradient(145deg,rgba(4,20,2,.62) 0%,rgba(10,35,5,.42) 50%,rgba(2,14,1,.68) 100%);}
+.dis-content{position:relative;z-index:2;padding:30px;}
+
+.dis-glass-card{background:rgba(255,253,232,.78);backdrop-filter:blur(28px) saturate(200%);border:1.5px solid rgba(180,130,10,.22);border-radius:var(--rxxl);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.28),var(--shx);}
+.dis-glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--W1),var(--G2),var(--W2),var(--G3));}
+.dis-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.dis-left-pane{padding:32px;border-right:1px solid rgba(180,130,10,.12);}
+.dis-right-pane{padding:32px;background:rgba(255,251,220,.4);}
+
+.dis-uz{border:2px dashed rgba(45,143,28,.3);border-radius:var(--rxl);padding:36px 24px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(255,252,228,.5);backdrop-filter:blur(8px);}
+.dis-uz:hover,.dis-uz.dov{border-color:var(--G2);background:rgba(45,143,28,.07);box-shadow:0 0 24px rgba(45,143,28,.15);}
+.dis-u-ico{font-size:2.8rem;margin-bottom:12px;animation:uFloat 3s ease-in-out infinite;}
+@keyframes uFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+.preview-wrap{border-radius:var(--rl);overflow:hidden;border:2px solid rgba(180,130,10,.18);background:rgba(255,252,228,.5);margin-top:16px;}
+.preview-wrap img{width:100%;max-height:260px;object-fit:contain;display:block;}
+
+.dis-result{background:linear-gradient(135deg,rgba(232,255,215,.9),rgba(255,251,200,.9));border:2px solid rgba(45,143,28,.28);border-radius:var(--rxl);padding:24px;text-align:center;margin-top:18px;box-shadow:0 8px 28px rgba(45,143,28,.15);animation:rpop .5s cubic-bezier(.34,1.56,.64,1);}
+
+.tip-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(180,130,10,.1);}
+.tip-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.tip-ico{width:30px;height:30px;border-radius:8px;background:rgba(45,143,28,.1);border:1px solid rgba(45,143,28,.18);color:var(--G2);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.tip-title{font-weight:700;font-size:.83rem;color:var(--t1);margin-bottom:2px;}
+.tip-desc{font-size:.76rem;color:var(--t3);line-height:1.55;}
+
+.dis-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(45,143,28,.1);border:1px solid rgba(45,143,28,.2);color:var(--G1);padding:4px 11px;border-radius:99px;font-size:.72rem;font-weight:700;margin:4px 3px;}
+
+@media(max-width:900px){.dis-main{margin-left:0;}.dis-inner{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="dis-page">
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-img-overlay"><img src="/static/images/rice_paddy.jpg" alt="" class="sb-img"></div>
+    <div class="sbu">
+      <div class="sbav">{{ first_name|first|upper }}{{ last_name|first|upper }}</div>
+      <div class="sbn">{{ first_name }} {{ last_name }}</div>
+      <div class="sbr">🌾 Farmer</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-lbl">Main Menu</div>
+      <a href="/dashboard" class="slink"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/crop_prediction" class="slink"><i class="fas fa-seedling"></i> Crop Prediction</a>
+      <a href="/crop_dis" class="slink act"><i class="fas fa-leaf"></i> Disease Detection</a>
+      <a href="/fert_rec" class="slink"><i class="fas fa-flask"></i> Fertilizer Advisor</a>
+      <div class="sb-lbl">Market & Info</div>
+      <a href="/news" class="slink"><i class="fas fa-newspaper"></i> Agriculture News</a>
+      <a href="/e_market" class="slink"><i class="fas fa-store"></i> E-Marketplace</a>
+      <a href="https://agmarknet.gov.in/" target="_blank" class="slink"><i class="fas fa-chart-line"></i> Market Prices</a>
+      <div class="sb-lbl">Support</div>
+      <a href="/loan1" class="slink"><i class="fas fa-hand-holding-usd"></i> Loans</a>
+      <a href="/insurance" class="slink"><i class="fas fa-shield-alt"></i> Insurance</a>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(180,130,10,.12);">
+        <a href="/log_out" class="slink lo"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN with leaf background -->
+  <div class="dis-main">
+    <div class="dis-bg"></div>
+    <div class="dis-bg-ov"></div>
+    <div class="dis-content">
+      <div class="ph an" style="margin-bottom:20px;">
+        <div class="ph-row">
+          <div class="ph-ico" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);"><i class="fas fa-leaf"></i></div>
+          <div>
+            <div class="ptitle" style="color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4);">Leaf Disease Detection</div>
+            <div class="psub" style="color:rgba(220,255,200,.8);">Upload a leaf photo — our AI detects diseases in seconds</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dis-glass-card an a2" style="position:relative;">
+        <div class="dis-inner">
+          <div class="dis-left-pane">
+            <!-- ✅ FIXED: action="/upload/" instead of "upload" -->
+            <form action="/upload/" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="dis-uz" id="dz" onclick="document.getElementById('lf').click()">
+                <div class="dis-u-ico">🍃</div>
+                <div class="utxt">Click or drag & drop your leaf image</div>
+                <div class="uhnt" style="margin-top:6px;">JPG, PNG, JPEG — Max 5MB</div>
+                <input type="file" name="Images" id="lf" accept=".png,.jpg,.jpeg" style="display:none;" onchange="prev(event)">
+              </div>
+              <div id="pvBox" class="preview-wrap" style="display:none;"><img id="pvImg" src="" alt="Preview"></div>
+              <div id="fnBox" style="text-align:center;font-size:.78rem;color:var(--t4);margin-top:7px;display:none;"></div>
+              <button type="submit" class="btn btn-crop bw" id="sb" style="padding:13px;margin-top:16px;opacity:.45;pointer-events:none;">
+                <i class="fas fa-microscope"></i> Analyse Leaf Disease
+              </button>
+            </form>
+            {% if result %}
+            <div class="dis-result">
+              <div style="font-size:.68rem;font-weight:700;color:var(--G1);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;"><i class="fas fa-microscope"></i> Detection Result</div>
+              <div style="font-family:'Fraunces',serif;font-size:1.85rem;font-weight:700;color:var(--t1);">{{ result }}</div>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="dis-right-pane">
+            <div style="font-weight:700;font-size:.92rem;color:var(--t1);margin-bottom:16px;"><i class="fas fa-camera" style="color:var(--G2);margin-right:7px;"></i>Photo Tips for Best Results</div>
+            <div class="tip-item"><div class="tip-ico"><i class="fas fa-sun"></i></div><div><div class="tip-title">Natural Lighting</div><div class="tip-desc">Take the photo in natural daylight for accurate colour detection</div></div></div>
+            <div class="tip-item"><div class="tip-ico"><i class="fas fa-expand-arrows-alt"></i></div><div><div class="tip-title">Leaf Fills the Frame</div><div class="tip-desc">Make sure the leaf occupies most of the image area</div></div></div>
+            <div class="tip-item"><div class="tip-ico"><i class="fas fa-eye"></i></div><div><div class="tip-title">Show Symptoms Clearly</div><div class="tip-desc">Include the diseased or affected area of the leaf</div></div></div>
+            <div class="tip-item"><div class="tip-ico"><i class="fas fa-tint-slash"></i></div><div><div class="tip-title">Dry & Clean Leaf</div><div class="tip-desc">Avoid wet, muddy or blurry leaf photos for accuracy</div></div></div>
+
+            <div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(180,130,10,.1);">
+              <div style="font-weight:700;font-size:.88rem;color:var(--t1);margin-bottom:10px;"><i class="fas fa-info-circle" style="color:var(--G2);margin-right:6px;"></i>Supported Disease Classes</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
+                <span class="dis-badge">Corn — Blight</span>
+                <span class="dis-badge">Corn — Gray Leaf Spot</span>
+                <span class="dis-badge">Corn — Rust</span>
+                <span class="dis-badge">Corn — Healthy</span>
+              </div>
+              <div style="font-size:.79rem;color:var(--t3);line-height:1.7;">Powered by <strong style="color:var(--t1);">VGG19</strong> deep learning architecture, trained on the PlantVillage dataset with thousands of annotated leaf images.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function prev(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    document.getElementById('pvImg').src=ev.target.result;
+    document.getElementById('pvBox').style.display='block';
+    document.getElementById('dz').style.display='none';
+  };r.readAsDataURL(f);
+  var sb=document.getElementById('sb');sb.style.opacity='1';sb.style.pointerEvents='auto';
+  document.getElementById('fnBox').style.display='block';
+  document.getElementById('fnBox').textContent='📎 '+f.name;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us{% endblock %}
+{% block extra_head %}
+<style>
+.contact-hero{border-radius:var(--rxxl);overflow:hidden;position:relative;padding:52px 48px;margin-bottom:32px;}
+.contact-hero-bg{position:absolute;inset:0;background:url('/static/images/farmer_seeds.jpg') center 40%/cover no-repeat;filter:brightness(.22) saturate(1.3);}
+.contact-hero-ov{position:absolute;inset:0;background:linear-gradient(130deg,rgba(4,20,1,.93) 0%,rgba(18,55,5,.62) 55%,rgba(3,15,1,.9) 100%);}
+.contact-hero-content{position:relative;z-index:1;}
+.contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:24px;}
+.info-block{display:flex;align-items:flex-start;gap:14px;padding:16px;border-radius:var(--rl);background:rgba(255,248,205,.55);border:1px solid rgba(180,130,10,.13);margin-bottom:12px;transition:all .25s;}
+.info-block:hover{background:rgba(255,248,205,.88);border-color:rgba(180,130,10,.26);}
+.info-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.info-label{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t5);margin-bottom:3px;}
+.info-val{font-size:.88rem;font-weight:700;color:var(--t1);}
+.info-sub{font-size:.73rem;color:var(--t4);margin-top:2px;}
+.map-wrap{border-radius:var(--rl);overflow:hidden;border:1.5px solid rgba(180,130,10,.18);box-shadow:var(--sh);}
+.faq-item{border-bottom:1px solid rgba(180,130,10,.12);padding:16px 0;}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{font-weight:700;font-size:.88rem;color:var(--t1);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q i{color:var(--G2);font-size:.75rem;transition:transform .3s;flex-shrink:0;}
+.faq-a{font-size:.81rem;color:var(--t3);line-height:1.72;margin-top:10px;display:none;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-q i{transform:rotate(180deg);}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block body %}
+<div class="pw">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+
+    <!-- HERO -->
+    <div class="contact-hero an">
+      <div class="contact-hero-bg"></div><div class="contact-hero-ov"></div>
+      <div class="contact-hero-content">
+        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:700;color:rgba(200,255,160,.8);letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;"><i class="fas fa-headset" style="font-size:.65rem;"></i> Get In Touch</div>
+        <div style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:#fff;margin-bottom:8px;max-width:540px;line-height:1.28;">We're Here to Help Indian Farmers Succeed</div>
+        <p style="color:rgba(210,255,170,.6);font-size:.88rem;max-width:440px;line-height:1.7;">Have a question about our tools, a technical issue, or want to partner with AgriSmart? Our support team responds within 24 hours.</p>
+        <div style="display:flex;gap:20px;margin-top:18px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;color:rgba(200,255,160,.7);font-size:.8rem;font-weight:600;"><i class="fas fa-clock" style="color:var(--G4);"></i> Mon–Sat, 9AM–6PM IST</div>
+          <div style="display:flex;align-items:center;gap:8px;color:rgba(200,255,160,.7);font-size:.8rem;font-weight:600;"><i class="fas fa-phone" style="color:var(--G4);"></i> 1800-AGRI-SMART (Toll Free)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT GRID -->
+    <div class="contact-grid an a2" style="margin-bottom:32px;">
+
+      <!-- LEFT: Info + Map -->
+      <div>
+        <div class="gc" style="margin-bottom:18px;">
+          <div class="gcb">
+            <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;"><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i>Contact Information</div>
+
+            <div class="info-block">
+              <div class="info-ico fi-g"><i class="fas fa-phone-alt"></i></div>
+              <div><div class="info-label">Helpline</div><div class="info-val">1800-AGRI-SMART</div><div class="info-sub">Toll-free · Mon–Sat, 9AM–6PM IST</div></div>
+            </div>
+            <div class="info-block">
+              <div class="info-ico fi-w"><i class="fas fa-envelope"></i></div>
+              <div><div class="info-label">Email Support</div><div class="info-val">help@agrismart.in</div><div class="info-sub">We respond within 24 hours</div></div>
+            </div>
+            <div class="info-block">
+              <div class="info-ico fi-b" style="background:rgba(56,133,200,.1);color:#3885c8;"><i class="fas fa-map-marker-alt"></i></div>
+              <div><div class="info-label">Head Office</div><div class="info-val">AgriSmart Technologies Pvt. Ltd.</div><div class="info-sub">Pune, Maharashtra, India — 411001</div></div>
+            </div>
+            <div class="info-block">
+              <div class="info-ico fi-s"><i class="fas fa-comment-alt"></i></div>
+              <div><div class="info-label">WhatsApp Support</div><div class="info-val">+91 98765 43210</div><div class="info-sub">For quick queries, available 8AM–8PM</div></div>
+            </div>
+
+            <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin:18px 0 12px;"><i class="fas fa-share-alt" style="margin-right:6px;"></i>Follow Us</div>
+            <div style="display:flex;gap:10px;">
+              {% for s in social_links %}
+              <a href="#" style="width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:{{ s.bg }};border:1.5px solid rgba(180,130,10,.15);color:var(--t2);font-size:.9rem;transition:all .22s;text-decoration:none;" onmouseover="this.style.transform='translateY(-2px)';this.style.color='var(--G1)'" onmouseout="this.style.transform='';this.style.color='var(--t2)'"><i class="{{ s.icon }}"></i></a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Embedded Map -->
+        <div class="map-wrap">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242117.68694498538!2d73.72283!3d18.524701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1717000000000!5m2!1sen!2sin"
+            width="100%" height="220" style="border:0;display:block;" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- RIGHT: Contact Form -->
+      <div class="gc">
+        <div class="gcb">
+          <div style="font-size:.66rem;font-weight:800;color:var(--S2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Send Us a Message</div>
+          <form action="" method="POST" id="contact-form">
+            {% csrf_token %}
+            <div class="g2">
+              <div class="fg"><label class="fl">First Name</label><input type="text" class="fc" name="first_name" placeholder="First" required></div>
+              <div class="fg"><label class="fl">Last Name</label><input type="text" class="fc" name="last_name" placeholder="Last" required></div>
+            </div>
+            <div class="fg"><label class="fl">Email Address</label><input type="email" class="fc" name="email" placeholder="your@email.com" required></div>
+            <div class="fg"><label class="fl">Phone Number</label><input type="tel" class="fc" name="phone" placeholder="XXXXXXXXXX"></div>
+            <div class="fg">
+              <label class="fl">Query Category</label>
+              <select class="fc" name="category" required>
+                <option value="">Select a category...</option>
+                <option>Crop Prediction Issue</option>
+                <option>Disease Detection Problem</option>
+                <option>Account / Login Help</option>
+                <option>Loan or Insurance Query</option>
+                <option>Marketplace Support</option>
+                <option>Partnership / Vendor Query</option>
+                <option>General Feedback</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Message</label><textarea class="fc" name="message" rows="5" placeholder="Describe your query in detail — the more information you provide, the faster we can help..." required style="resize:vertical;"></textarea></div>
+            <button type="submit" class="btn btn-crop bw" style="padding:13px;" onclick="handleSubmit(event)"><i class="fas fa-paper-plane"></i> Send Message</button>
+            <div id="success-msg" style="display:none;margin-top:14px;" class="rbox"><div class="rlbl"><i class="fas fa-check-circle"></i> Message Sent!</div><div style="font-size:.84rem;color:var(--t2);margin-top:6px;">Thank you! We'll respond to your query within 24 hours.</div></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="ph an a3"><div class="ph-row"><div class="ph-ico fi-w"><i class="fas fa-question-circle"></i></div><div><div class="ptitle">Frequently Asked Questions</div><div class="psub">Quick answers to common questions from our farmers</div></div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:36px;" class="an a4">
+      <div class="gc"><div class="gcb">
+        <div class="faq-item open">
+          <div class="faq-q" onclick="toggleFaq(this)">Is AgriSmart completely free to use? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Yes! All core features — crop prediction, disease detection, fertilizer recommendation, marketplace access, and news — are completely free for registered farmers. We believe every Indian farmer deserves access to modern agricultural tools.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How accurate is the crop prediction model? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Our Random Forest model achieves 95%+ accuracy on validation datasets covering 22 crop types. The model is trained on 2,200+ records from Indian agricultural data. Accuracy is best when you provide precise soil test values.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What crops does disease detection support? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Our VGG19 model supports 14 crops including Apple, Cherry, Corn, Grape, Peach, Pepper, Potato, Strawberry, Tomato, and more — with 38 disease classes in total. More crops are being added each season.</div>
+        </div>
+      </div></div>
+      <div class="gc"><div class="gcb">
+        <div class="faq-item open">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I get a soil test done? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">You can get your soil tested at any Krishi Vigyan Kendra (KVK), Soil Health Card centre, or accredited private lab. The government's Soil Health Card scheme provides free testing — visit soilhealth.dac.gov.in to find a nearby lab.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I use AgriSmart on my mobile phone? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Absolutely! AgriSmart is fully responsive and works on all smartphones, tablets, and computers. No app download is required — just open your mobile browser and visit our website.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I report a bug or suggest a feature? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">We'd love your feedback! Use the contact form above, email us at help@agrismart.in, or call our helpline. Feature suggestions from farmers directly shape our product roadmap.</div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.querySelector('#contact-form button[type=submit]');
+  btn.style.opacity = '.7'; btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  setTimeout(() => {
+    document.getElementById('contact-form').querySelectorAll('input,textarea,select').forEach(f => f.value = '');
+    document.getElementById('success-msg').style.display = 'block';
+    btn.style.opacity = '1'; btn.style.pointerEvents = '';
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+  }, 1500);
+}
+</script>
+{% endblock %}
