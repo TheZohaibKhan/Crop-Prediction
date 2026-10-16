@@ -1,43 +1,99 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+
+name: Deploy Crop Prediction Frontend
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup Pages
+
+      - name: Prepare static frontend
+        shell: python
+        run: |
+          import os
+          import re
+          import shutil
+          from pathlib import Path
+
+          output = Path("_site")
+          output.mkdir(exist_ok=True)
+
+          # Copy CSS, JavaScript, images and other static assets
+          if Path("static").exists():
+              shutil.copytree("static", output / "static", dirs_exist_ok=True)
+
+          templates = Path("templates")
+          if not templates.exists():
+              raise SystemExit("The templates folder was not found.")
+
+          # Convert each HTML template into a static HTML page.
+          for source in templates.glob("*.html"):
+              name = source.name
+              if name == "base.html":
+                  continue
+
+              content = source.read_text(encoding="utf-8")
+
+              # Remove Django template tags and variables.
+              content = re.sub(r"{%.*?%}", "", content, flags=re.S)
+              content = re.sub(r"{{.*?}}", "", content, flags=re.S)
+
+              # Point static links at the published static folder.
+              content = content.replace("/static/", "./static/")
+
+              # Save homepage as index.html.
+              destination = "index.html" if name == "index.html" else name
+              (output / destination).write_text(content, encoding="utf-8")
+
+          # Create a navigation homepage if no index.html template exists.
+          if not (output / "index.html").exists():
+              pages = sorted(
+                  p.name for p in output.glob("*.html")
+                  if p.name != "index.html"
+              )
+              links = "\n".join(
+                  f'<li><a href="{p}">{p.replace(".html", "").replace("_", " ").title()}</a></li>'
+                  for p in pages
+              )
+              (output / "index.html").write_text(
+                  "<!doctype html><html><head><meta charset='utf-8'>"
+                  "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+                  "<title>Crop Prediction</title></head><body>"
+                  "<h1>Crop Prediction Project</h1>"
+                  "<p>Frontend demonstration only. Backend features are disabled.</p>"
+                  f"<ul>{links}</ul></body></html>",
+                  encoding="utf-8"
+              )
+
+          (output / ".nojekyll").touch()
+
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact
+
+      - name: Upload static website
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
+          path: _site
+
+      - name: Deploy website
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
