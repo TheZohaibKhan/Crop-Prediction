@@ -1,5 +1,4 @@
-
-name: Deploy Crop Prediction Frontend
+name: Publish AgriSmart static showcase
 
 on:
   push:
@@ -12,88 +11,185 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build static showcase from Django templates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import shutil
+          from html import escape
+
+          ROOT = Path(".")
+          OUT = Path("_site")
+          TEMPLATES = ROOT / "templates"
+          BASE_PATH = "/Crop-Prediction"
+          OUT.mkdir(exist_ok=True)
+
+          if not (TEMPLATES / "base.html").exists():
+              raise SystemExit("ERROR: templates/base.html was not found.")
+          if not (TEMPLATES / "index.html").exists():
+              raise SystemExit("ERROR: templates/index.html was not found.")
+
+          base = (TEMPLATES / "base.html").read_text(encoding="utf-8")
+
+          def get_blocks(text):
+              blocks = {}
+              # Template blocks in these files are simple, non-nested blocks.
+              pattern = re.compile(
+                  r"{%\s*block\s+([A-Za-z_][\w]*)\s*%}(.*?){%\s*endblock(?:\s+\1)?\s*%}",
+                  re.S
+              )
+              for match in pattern.finditer(text):
+                  blocks[match.group(1)] = match.group(2)
+              return blocks
+
+          def replace_block(text, name, value):
+              pattern = re.compile(
+                  r"{%\s*block\s+" + re.escape(name) +
+                  r"\s*%}.*?{%\s*endblock(?:\s+" + re.escape(name) + r")?\s*%}",
+                  re.S
+              )
+              return pattern.sub(lambda _: value, text, count=1)
+
+          # Public pages are generated from templates that extend base.html.
+          page_files = {}
+          for template in sorted(TEMPLATES.glob("*.html")):
+              if template.name == "base.html":
+                  continue
+              raw = template.read_text(encoding="utf-8")
+              blocks = get_blocks(raw)
+              if not blocks and "{% extends" not in raw:
+                  # Still include standalone HTML templates as a static page.
+                  rendered = raw
+              else:
+                  rendered = base
+                  for block_name, block_value in blocks.items():
+                      rendered = replace_block(rendered, block_name, block_value)
+              rendered = re.sub(r"{%\s*extends\s+[^%]+%}", "", rendered)
+              rendered = re.sub(r"{%\s*load\s+[^%]+%}", "", rendered)
+
+              # For a static showcase, show the public (logged-out) navigation.
+              def choose_public_branch(match):
+                  body = match.group(1)
+                  parts = re.split(r"{%\s*else\s*%}", body, maxsplit=1)
+                  return parts[1] if len(parts) == 2 else ""
+              rendered = re.sub(
+                  r"{%\s*if\s+(?:user\.is_authenticated|request\.user\.is_authenticated)\s*%}(.*?){%\s*endif\s*%}",
+                  choose_public_branch, rendered, flags=re.S
+              )
+
+              # Remove Django message loops and any remaining server-side logic.
+              rendered = re.sub(
+                  r"{%\s*for\s+message\s+in\s+messages\s*%}.*?{%\s*endfor\s*%}",
+                  "", rendered, flags=re.S
+              )
+              rendered = re.sub(r"{%\s*(?:if|elif|else|endif|for|endfor|with|endwith|csrf_token|url|static|include|load|comment|endcomment)\b.*?%}", "", rendered, flags=re.S)
+              rendered = re.sub(r"{{.*?}}", "", rendered, flags=re.S)
+
+              # Keep assets working from the repository's project Pages URL.
+              rendered = rendered.replace('"/static/', f'"{BASE_PATH}/static/')
+              rendered = rendered.replace("'/static/", f"'{BASE_PATH}/static/")
+              rendered = rendered.replace("url(/static/", f"url({BASE_PATH}/static/")
+              rendered = rendered.replace("url('/static/", f"url('{BASE_PATH}/static/")
+              rendered = rendered.replace('url("/static/', f'url("{BASE_PATH}/static/')
+
+              # The root route must point to the published homepage.
+              rendered = re.sub(r'(\b(?:href|action)\s*=\s*["\'])/["\']', rf'\g<1>{BASE_PATH}/["\']', rendered)
+
+              page_name = "index.html" if template.stem == "index" else f"{template.stem}.html"
+              (OUT / page_name).write_text(rendered, encoding="utf-8")
+              page_files[template.stem.lower()] = page_name
+
+          # Route names used by the supplied homepage and common Django URL names.
+          aliases = {
+              "": "index.html", "home": "index.html", "index": "index.html",
+              "crop_prediction": "crop_prediction.html", "crop_dis": "crop_dis.html",
+              "fert_rec": "fert_rec.html", "e_market": "e_market.html",
+              "news": "news.html", "loan1": "loan1.html", "log_in": "log_in.html",
+              "register": "register.html", "services": "services.html",
+              "blog": "blog.html", "contact": "contact.html",
+              "vendor_log_in": "vendor_log_in.html",
+          }
+          aliases.update(page_files)
+
+          # Rewrite local Django route links to generated static .html pages.
+          for html_file in OUT.glob("*.html"):
+              text = html_file.read_text(encoding="utf-8")
+
+              def route_rewrite(match):
+                  attr, route = match.group(1), match.group(2)
+                  if route.startswith(("http://", "https://", "mailto:", "tel:", "#", "javascript:")):
+                      return match.group(0)
+                  route_clean = route.split("?", 1)[0].split("#", 1)[0].strip("/")
+                  route_key = route_clean.lower()
+                  if route_key.startswith("crop-prediction/"):
+                      route_key = route_key[len("crop-prediction/"):]
+                  target = aliases.get(route_key)
+                  if target:
+                      return f'{attr}="{BASE_PATH}/{target}"'
+                  if route in ("/", ""):
+                      return f'{attr}="{BASE_PATH}/"'
+                  # Do not send visitors to a Django server that is not deployed.
+                  return f'{attr}="#" data-static-demo="true" title="Backend feature is not active in this static demo"'
+
+              text = re.sub(
+                  r'\b(href|action)\s*=\s*["\']([^"\']*)["\']',
+                  route_rewrite, text, flags=re.I
+              )
+
+              # Static-only forms should not try to POST to a nonexistent backend.
+              text = re.sub(r'<form\b', '<form onsubmit="event.preventDefault(); alert(\'This is a static showcase. Backend functionality is not enabled.\'); return false;"', text, flags=re.I)
+              html_file.write_text(text, encoding="utf-8")
+
+          # Copy static assets (CSS, JavaScript, images, icons, fonts).
+          static_dir = ROOT / "static"
+          if static_dir.exists():
+              shutil.copytree(static_dir, OUT / "static", dirs_exist_ok=True)
+              # Rewrite absolute /static/ paths inside CSS/JS files too.
+              for asset in (OUT / "static").rglob("*"):
+                  if asset.is_file() and asset.suffix.lower() in {".css", ".js", ".html"}:
+                      try:
+                          value = asset.read_text(encoding="utf-8")
+                          value = value.replace("/static/", f"{BASE_PATH}/static/")
+                          asset.write_text(value, encoding="utf-8")
+                      except UnicodeDecodeError:
+                          pass
+
+          # Include media files if the project uses them.
+          media_dir = ROOT / "media"
+          if media_dir.exists():
+              shutil.copytree(media_dir, OUT / "media", dirs_exist_ok=True)
+
+          (OUT / ".nojekyll").write_text("", encoding="utf-8")
+          print("Static showcase built in _site/")
+          print("Generated pages:", ", ".join(sorted(p.name for p in OUT.glob("*.html"))))
+          PY
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Prepare static frontend
-        shell: python
-        run: |
-          import os
-          import re
-          import shutil
-          from pathlib import Path
-
-          output = Path("_site")
-          output.mkdir(exist_ok=True)
-
-          # Copy CSS, JavaScript, images and other static assets
-          if Path("static").exists():
-              shutil.copytree("static", output / "static", dirs_exist_ok=True)
-
-          templates = Path("templates")
-          if not templates.exists():
-              raise SystemExit("The templates folder was not found.")
-
-          # Convert each HTML template into a static HTML page.
-          for source in templates.glob("*.html"):
-              name = source.name
-              if name == "base.html":
-                  continue
-
-              content = source.read_text(encoding="utf-8")
-
-              # Remove Django template tags and variables.
-              content = re.sub(r"{%.*?%}", "", content, flags=re.S)
-              content = re.sub(r"{{.*?}}", "", content, flags=re.S)
-
-              # Point static links at the published static folder.
-              content = content.replace("/static/", "./static/")
-
-              # Save homepage as index.html.
-              destination = "index.html" if name == "index.html" else name
-              (output / destination).write_text(content, encoding="utf-8")
-
-          # Create a navigation homepage if no index.html template exists.
-          if not (output / "index.html").exists():
-              pages = sorted(
-                  p.name for p in output.glob("*.html")
-                  if p.name != "index.html"
-              )
-              links = "\n".join(
-                  f'<li><a href="{p}">{p.replace(".html", "").replace("_", " ").title()}</a></li>'
-                  for p in pages
-              )
-              (output / "index.html").write_text(
-                  "<!doctype html><html><head><meta charset='utf-8'>"
-                  "<meta name='viewport' content='width=device-width, initial-scale=1'>"
-                  "<title>Crop Prediction</title></head><body>"
-                  "<h1>Crop Prediction Project</h1>"
-                  "<p>Frontend demonstration only. Backend features are disabled.</p>"
-                  f"<ul>{links}</ul></body></html>",
-                  encoding="utf-8"
-              )
-
-          (output / ".nojekyll").touch()
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload static website
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-      - name: Deploy website
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
