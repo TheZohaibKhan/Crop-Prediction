@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="#live-demo">🌐 Live Demo</a> ·
+  <a href="https://thezohaibkhan.github.io/Crop-Prediction/">🌐 Live Demo</a> ·
   <a href="https://github.com/TheZohaibKhan/Crop-Prediction">📦 Source Repository</a> ·
   <a href="#features">✨ Features</a> ·
   <a href="#local-installation">⚙️ Run Locally</a>
